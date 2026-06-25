@@ -264,7 +264,7 @@ export default function ReaderPage({ params }: PageProps) {
         html = html.replace(regex, `<span class="${highlightClass}">${h.text}</span>`);
       });
 
-    return <div dangerouslySetInnerHTML={{ __html: html }} />;
+    return <span dangerouslySetInnerHTML={{ __html: html }} />;
   };
 
   if (loading || !book) {
@@ -507,14 +507,25 @@ export default function ReaderPage({ params }: PageProps) {
           ref={scrollContainerRef}
           onScroll={handleScroll}
           onMouseUp={handleTextSelection}
-          className="flex-1 overflow-y-auto px-6 py-12 scroll-smooth"
+          className={`flex-1 overflow-y-auto px-6 py-12 scroll-smooth relative z-10 ${
+            theme === "glass" ? "bg-[#050508]/40 backdrop-blur-xl" : ""
+          }`}
         >
-          <div className="max-w-[700px] mx-auto">
+          {theme === "glass" && (
+            <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden opacity-30">
+              <div className="absolute top-[15%] left-[10%] w-[400px] h-[400px] rounded-full bg-violet-600/20 blur-[120px] animate-float-slow" />
+              <div className="absolute bottom-[25%] right-[10%] w-[500px] h-[500px] rounded-full bg-cyan-600/15 blur-[150px] animate-float-medium" />
+            </div>
+          )}
+          <div className="max-w-[700px] mx-auto relative z-10">
             {/* Header info inside reader */}
             <div className="mb-12 border-b border-zinc-500/10 pb-8 text-center sm:text-left">
-              <span className="text-xs uppercase font-bold tracking-widest text-violet-400">
-                {book.category}
-              </span>
+              <div className="flex items-center justify-between gap-4">
+                <span className="text-xs uppercase font-bold tracking-widest text-violet-400">
+                  {book.category}
+                </span>
+                <span className="text-xs text-zinc-500 font-semibold">{book.readTime} read</span>
+              </div>
               <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mt-2 leading-tight">
                 {currentChapter.title}
               </h2>
@@ -524,14 +535,36 @@ export default function ReaderPage({ params }: PageProps) {
             {/* Reading Content */}
             <article
               ref={articleRef}
-              className={`leading-relaxed whitespace-pre-wrap ${fontClass}`}
+              className={`leading-relaxed ${fontClass} max-w-none`}
               style={{
                 fontSize: `${fontSize}px`,
                 lineHeight: "1.8",
                 letterSpacing: "-0.011em"
               }}
             >
-              {renderHighlightedContent(currentChapter.content)}
+              {currentChapter.content.split(/\n\n+/).map((para, pIdx) => {
+                const isFirst = pIdx === 0;
+                
+                // Align text color with active reader theme
+                let paragraphColorClass = theme === "light" 
+                  ? "text-zinc-800" 
+                  : theme === "sepia" 
+                  ? "text-[#433422]" 
+                  : "text-zinc-300";
+                  
+                return (
+                  <p
+                    key={pIdx}
+                    className={`mb-6 text-justify sm:text-left leading-relaxed ${paragraphColorClass} ${
+                      isFirst
+                        ? "first-letter:text-5xl first-letter:font-bold first-letter:font-serif first-letter:mr-3 first-letter:float-left first-letter:text-[var(--primary)] first-letter:leading-none"
+                        : ""
+                    }`}
+                  >
+                    {renderHighlightedContent(para)}
+                  </p>
+                );
+              })}
             </article>
 
             {/* Chapter Navigation footer inside reader */}
