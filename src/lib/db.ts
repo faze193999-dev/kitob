@@ -281,14 +281,23 @@ const isClient = () => typeof window !== "undefined";
 // Get item from localStorage or fallback
 const getStorageItem = <T>(key: string, fallback: T): T => {
   if (!isClient()) return fallback;
-  const item = localStorage.getItem(key);
-  return item ? JSON.parse(item) : fallback;
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : fallback;
+  } catch (e) {
+    console.error(`Error reading localStorage key "${key}":`, e);
+    return fallback;
+  }
 };
 
 // Set item in localStorage
 const setStorageItem = <T>(key: string, value: T): void => {
   if (!isClient()) return;
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    console.error(`Error writing localStorage key "${key}":`, e);
+  }
 };
 
 // ----------------------------------------------------

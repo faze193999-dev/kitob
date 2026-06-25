@@ -65,15 +65,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Load user session on mount
   useEffect(() => {
-    const storedUser = localStorage.getItem("bv_current_user");
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    } else {
-      // Pre-login the standard demo user so the platform is immediately active
+    try {
+      const storedUser = localStorage.getItem("bv_current_user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
+      } else {
+        // Pre-login the standard demo user so the platform is immediately active
+        setUser(DEMO_USER);
+        localStorage.setItem("bv_current_user", JSON.stringify(DEMO_USER));
+      }
+    } catch (e) {
+      console.error("Failed to parse user session", e);
       setUser(DEMO_USER);
       localStorage.setItem("bv_current_user", JSON.stringify(DEMO_USER));
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }, []);
 
   const loginWithEmail = async (email: string): Promise<boolean> => {

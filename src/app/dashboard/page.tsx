@@ -18,9 +18,11 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function DashboardPage() {
   const { user, updateUserProfile, loading } = useAuth();
+  const router = useRouter();
   
   // Library Tabs: 'progress' | 'saved' | 'completed'
   const [activeTab, setActiveTab] = useState<"progress" | "saved" | "completed">("progress");
@@ -49,6 +51,13 @@ export default function DashboardPage() {
     setUsernameInput(user.username);
     setBioInput(user.bio || "");
   }, [user]);
+
+  // Redirect to login if user session is absent and loading finishes
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push("/auth");
+    }
+  }, [user, loading, router]);
 
   const handleProfileSave = (e: React.FormEvent) => {
     e.preventDefault();
