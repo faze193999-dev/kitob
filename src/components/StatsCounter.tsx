@@ -64,28 +64,28 @@ export const StatsCounter: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           <StatItem
-            label="Digital Library"
+            label="Raqamli kutubxona"
             target={1480}
             suffix="+"
             icon={BookOpen}
             color="from-violet-600 to-indigo-600"
           />
           <StatItem
-            label="Active Readers"
+            label="Faol mutolaachilar"
             target={85200}
             suffix="+"
             icon={Users}
             color="from-cyan-600 to-blue-600"
           />
           <StatItem
-            label="Featured Thinkers"
+            label="Mashhur ijodkorlar"
             target={120}
             suffix="+"
             icon={Award}
             color="from-rose-600 to-pink-600"
           />
           <StatItem
-            label="User Annotations"
+            label="Foydalanuvchi eslatmalari"
             target={340000}
             suffix="+"
             icon={Star}

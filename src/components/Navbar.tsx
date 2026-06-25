@@ -32,9 +32,9 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
   }, []);
 
   const navLinks = [
-    { name: "Discover", href: "/" },
-    { name: "My Library", href: "/dashboard" },
-    { name: "Dashboard", href: "/dashboard" }
+    { name: "Kashf etish", href: "/" },
+    { name: "Mening kutubxonam", href: "/dashboard" },
+    { name: "Boshqaruv paneli", href: "/dashboard" }
   ];
 
   const toggleTheme = () => {
@@ -105,7 +105,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
             <button
               onClick={onSearchClick}
               className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all duration-300 cursor-pointer"
-              title="Search Books"
+              title="Kitoblarni qidirish"
             >
               <Search className="w-4 h-4" />
             </button>
@@ -116,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
             <button
               onClick={toggleTheme}
               className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all duration-300 cursor-pointer text-xs font-semibold"
-              title="Change Reader Style"
+              title="Mutolaa sozlamalari"
             >
               <Sliders className="w-4 h-4" />
             </button>
@@ -129,7 +129,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
               className="px-4.5 py-2.5 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400 hover:bg-violet-600/20 hover:text-violet-300 text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5"
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
-              Admin Portal
+              Admin paneli
             </Link>
           )}
 
@@ -165,7 +165,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                       transition={{ duration: 0.2 }}
                     >
                       <div className="px-3 py-2.5 border-b border-white/10 mb-1">
-                        <p className="text-xs text-zinc-400 font-medium">Signed in as</p>
+                        <p className="text-xs text-zinc-400 font-medium">Tizimga kirilgan</p>
                         <p className="text-sm font-semibold text-white truncate">{user.email}</p>
                       </div>
 
@@ -175,7 +175,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                         onClick={() => setProfileDropdownOpen(false)}
                       >
                         <User className="w-4 h-4 text-zinc-400" />
-                        My Library
+                        Mening kutubxonam
                       </Link>
 
                       {user.role === "admin" && (
@@ -185,7 +185,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                           onClick={() => setProfileDropdownOpen(false)}
                         >
                           <LayoutDashboard className="w-4 h-4 text-zinc-400" />
-                          Admin Console
+                          Admin boshqaruvi
                         </Link>
                       )}
 
@@ -197,7 +197,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                         className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 transition-colors duration-200 text-left mt-1 cursor-pointer"
                       >
                         <LogOut className="w-4 h-4" />
-                        Logout
+                        Chiqish
                       </button>
                     </motion.div>
                   </>
@@ -209,7 +209,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
               href="/auth"
               className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-sm font-semibold text-white hover:shadow-lg hover:shadow-violet-600/25 active:scale-98 transition-all duration-300"
             >
-              Sign In
+              Kirish
             </Link>
           )}
         </div>
@@ -262,7 +262,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                   className="text-lg font-medium text-violet-400 hover:text-violet-300 transition-colors duration-200"
                   onClick={() => setMenuOpen(false)}
                 >
-                  Admin Portal
+                  Admin paneli
                 </Link>
               )}
             </div>
@@ -289,7 +289,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                   }}
                   className="w-full py-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-center font-medium text-rose-400 hover:bg-rose-500/20 transition-all duration-200"
                 >
-                  Logout
+                  Chiqish
                 </button>
               </div>
             ) : (
@@ -298,7 +298,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                 className="w-full py-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-center font-semibold text-white shadow-lg shadow-violet-500/20"
                 onClick={() => setMenuOpen(false)}
               >
-                Sign In
+                Kirish
               </Link>
             )}
           </motion.div>

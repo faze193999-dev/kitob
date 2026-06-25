@@ -38,9 +38,9 @@ export const Authors: React.FC = () => {
         {/* Title */}
         <div className="mb-12 text-center">
           <h2 className="text-2xl sm:text-3xl font-bold font-sans text-white tracking-tight">
-            Featured Thinkers
+            Mashhur mualliflar
           </h2>
-          <p className="text-zinc-500 text-sm mt-1">Get to know the masterminds behind the content</p>
+          <p className="text-zinc-500 text-sm mt-1">Kitoblar va maqolalar ortidagi ijodkorlar bilan tanishing</p>
         </div>
 
         {/* Grid */}
@@ -91,21 +91,21 @@ export const Authors: React.FC = () => {
                 <div>
                   <span className="flex items-center justify-center gap-1 text-xs text-zinc-500 mb-1">
                     <BookOpen className="w-3.5 h-3.5" />
-                    Books
+                    Kitoblar
                   </span>
                   <span className="text-sm font-bold text-white">{author.stats.books}</span>
                 </div>
                 <div>
                   <span className="flex items-center justify-center gap-1 text-xs text-zinc-500 mb-1">
                     <Users className="w-3.5 h-3.5" />
-                    Readers
+                    O'quvchilar
                   </span>
                   <span className="text-sm font-bold text-white">{author.stats.readers}</span>
                 </div>
                 <div>
                   <span className="flex items-center justify-center gap-1 text-xs text-zinc-500 mb-1">
                     <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                    Rating
+                    Reyting
                   </span>
                   <span className="text-sm font-bold text-white">{author.stats.rating}</span>
                 </div>

@@ -73,7 +73,7 @@ const INITIAL_BOOKS: Book[] = [
     id: "odyssey-of-code",
     title: "The Odyssey of Code",
     author: "Elena Rostova",
-    category: "Technology",
+    category: "Texnologiya",
     coverUrl: "/covers/odyssey.png",
     description: "An epic exploration into the architecture of modern software systems, neural networks, and the future of engineering. Dive deep into clean coding, high performance design, and quantum computing concepts.",
     readTime: "45 mins",
@@ -110,7 +110,7 @@ When we program quantum computers, we utilize gates that perform rotations on th
     id: "mind-and-flow",
     title: "Mind & Flow",
     author: "Julian Vance",
-    category: "Self-Development",
+    category: "Shaxsiy rivojlanish",
     coverUrl: "/covers/mindflow.png",
     description: "A masterclass in managing attention, cultivating flow states, and overcoming digital fatigue in a hyper-connected society. Learn practical strategies to regain control of your focus.",
     readTime: "30 mins",
@@ -147,7 +147,7 @@ True rest is active, not passive. Scrolling social media is not rest; it is cogn
     id: "art-of-scaling",
     title: "The Art of Scaling",
     author: "Marcus Chen",
-    category: "Business",
+    category: "Biznes",
     coverUrl: "",
     gradientFrom: "from-orange-500",
     gradientTo: "to-red-600",
@@ -179,7 +179,7 @@ When you scale, communication overhead grows quadratically. If you have 4 people
     id: "echoes-of-future",
     title: "Echoes of the Future",
     author: "Sarah Elson",
-    category: "Fiction",
+    category: "Badiiy adabiyot",
     coverUrl: "",
     gradientFrom: "from-indigo-600",
     gradientTo: "to-purple-800",
@@ -211,7 +211,7 @@ He realized the universe wasn't expanding; it was rendering. We were characters 
     id: "quantum-mechanics",
     title: "Quantum Mechanics: The Basics",
     author: "Dr. Arthur Pendelton",
-    category: "Science",
+    category: "Ilm-fan",
     coverUrl: "",
     gradientFrom: "from-blue-600",
     gradientTo: "to-cyan-500",
@@ -243,7 +243,7 @@ The question of what constitutes an 'observer' remains one of the greatest philo
     id: "great-gatsby",
     title: "The Great Gatsby",
     author: "F. Scott Fitzgerald",
-    category: "Fiction",
+    category: "Badiiy adabiyot",
     coverUrl: "",
     gradientFrom: "from-yellow-600",
     gradientTo: "to-zinc-800",
@@ -487,13 +487,13 @@ export const BookVerseDB = {
     });
 
     const weeklyActivity = [
-      { day: "Mon", minutes: completedBooks > 0 ? 12 : 5 },
-      { day: "Tue", minutes: totalMinutes > 10 ? 25 : 8 },
-      { day: "Wed", minutes: totalMinutes > 30 ? 18 : 12 },
-      { day: "Thu", minutes: totalMinutes > 50 ? 40 : 15 },
-      { day: "Fri", minutes: totalMinutes > 70 ? 32 : 10 },
-      { day: "Sat", minutes: totalMinutes > 90 ? 55 : 20 },
-      { day: "Sun", minutes: totalMinutes > 110 ? 45 : 18 }
+      { day: "Dush", minutes: completedBooks > 0 ? 12 : 5 },
+      { day: "Sesh", minutes: totalMinutes > 10 ? 25 : 8 },
+      { day: "Chor", minutes: totalMinutes > 30 ? 18 : 12 },
+      { day: "Pay", minutes: totalMinutes > 50 ? 40 : 15 },
+      { day: "Jum", minutes: totalMinutes > 70 ? 32 : 10 },
+      { day: "Shan", minutes: totalMinutes > 90 ? 55 : 20 },
+      { day: "Yak", minutes: totalMinutes > 110 ? 45 : 18 }
     ];
 
     const streak = progress.length > 0 ? Math.min(7, 3 + progress.length) : 0;
@@ -524,12 +524,12 @@ export const BookVerseDB = {
     }));
 
     const monthlyRevenue = [
-      { month: "Jan", amount: 2400 },
-      { month: "Feb", amount: 3200 },
+      { month: "Yan", amount: 2400 },
+      { month: "Fev", amount: 3200 },
       { month: "Mar", amount: 4800 },
       { month: "Apr", amount: 6100 },
       { month: "May", amount: 7800 },
-      { month: "Jun", amount: 9400 }
+      { month: "Iyun", amount: 9400 }
     ];
 
     const currentRevenue = monthlyRevenue.reduce((sum, m) => sum + m.amount, 0);

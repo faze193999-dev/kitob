@@ -272,7 +272,7 @@ export default function ReaderPage({ params }: PageProps) {
       <div className="min-h-screen bg-[#050508] flex items-center justify-center">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 rounded-full border-4 border-violet-500/20 border-t-violet-500 animate-spin" />
-          <p className="text-zinc-500 text-sm font-medium animate-pulse">Loading BookVerse Reader...</p>
+          <p className="text-zinc-500 text-sm font-medium animate-pulse">BookVerse mutolaa interfeysi yuklanmoqda...</p>
         </div>
       </div>
     );
@@ -313,7 +313,7 @@ export default function ReaderPage({ params }: PageProps) {
             <h1 className="text-sm font-bold truncate max-w-[200px] sm:max-w-[400px]">
               {book.title}
             </h1>
-            <p className="text-xs text-zinc-500">by {book.author}</p>
+            <p className="text-xs text-zinc-500">muallif: {book.author}</p>
           </div>
         </div>
 
@@ -325,7 +325,7 @@ export default function ReaderPage({ params }: PageProps) {
             className={`p-2 rounded-xl cursor-pointer ${
               sidebarOpen ? "bg-violet-500/10 text-violet-500" : "hover:bg-white/5"
             }`}
-            title="Chapters List"
+            title="Boblar ro'yxati"
           >
             <Menu className="w-5 h-5" />
           </button>
@@ -336,7 +336,7 @@ export default function ReaderPage({ params }: PageProps) {
             className={`p-2 rounded-xl cursor-pointer ${
               isChapterBookmarked() ? "text-violet-500" : "hover:bg-white/5"
             }`}
-            title="Bookmark Chapter"
+            title="Bobni xatcho'plarga qo'shish"
           >
             {isChapterBookmarked() ? (
               <BookmarkCheck className="w-5 h-5" />
@@ -351,7 +351,7 @@ export default function ReaderPage({ params }: PageProps) {
             className={`p-2 rounded-xl cursor-pointer ${
               annotationsOpen ? "bg-violet-500/10 text-violet-500" : "hover:bg-white/5"
             }`}
-            title="My Highlights & Notes"
+            title="Mening belgilashlarim va qaydlarim"
           >
             <BookOpen className="w-5 h-5" />
           </button>
@@ -362,7 +362,7 @@ export default function ReaderPage({ params }: PageProps) {
             className={`p-2 rounded-xl cursor-pointer ${
               settingsOpen ? "bg-violet-500/10 text-violet-500" : "hover:bg-white/5"
             }`}
-            title="Reader Preferences"
+            title="Mutolaa sozlamalari"
           >
             <Settings2 className="w-5 h-5" />
           </button>
@@ -371,7 +371,7 @@ export default function ReaderPage({ params }: PageProps) {
           <button
             onClick={toggleFullscreen}
             className="p-2 rounded-xl hover:bg-white/5 hidden sm:block cursor-pointer"
-            title={isFullscreen ? "Exit Full Screen" : "Full Screen"}
+            title={isFullscreen ? "To'liq ekrandan chiqish" : "To'liq ekran"}
           >
             {isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
           </button>
@@ -402,7 +402,7 @@ export default function ReaderPage({ params }: PageProps) {
               >
                 <div>
                   <div className="flex items-center justify-between mb-8">
-                    <h3 className="text-lg font-bold text-white">Table of Contents</h3>
+                    <h3 className="text-lg font-bold text-white">Mundarija</h3>
                     <button
                       onClick={() => setSidebarOpen(false)}
                       className="p-1 rounded-full hover:bg-white/5 text-zinc-500"
@@ -437,8 +437,8 @@ export default function ReaderPage({ params }: PageProps) {
                 </div>
 
                 <div className="pt-6 border-t border-white/5 flex items-center justify-between text-xs text-zinc-500">
-                  <span>Author: {book.author}</span>
-                  <span>{book.chapters.length} Chapters</span>
+                  <span>Muallif: {book.author}</span>
+                  <span>{book.chapters.length} ta bob</span>
                 </div>
               </motion.aside>
             </>
@@ -463,22 +463,22 @@ export default function ReaderPage({ params }: PageProps) {
                 <button
                   onClick={() => createHighlight("yellow")}
                   className="w-5 h-5 rounded-full bg-yellow-400 hover:scale-110 transition-transform cursor-pointer"
-                  title="Highlight Yellow"
+                  title="Sariq bilan belgilash"
                 />
                 <button
                   onClick={() => createHighlight("green")}
                   className="w-5 h-5 rounded-full bg-emerald-400 hover:scale-110 transition-transform cursor-pointer"
-                  title="Highlight Green"
+                  title="Yashil bilan belgilash"
                 />
                 <button
                   onClick={() => createHighlight("blue")}
                   className="w-5 h-5 rounded-full bg-cyan-400 hover:scale-110 transition-transform cursor-pointer"
-                  title="Highlight Blue"
+                  title="Moviy bilan belgilash"
                 />
                 <button
                   onClick={() => createHighlight("pink")}
                   className="w-5 h-5 rounded-full bg-pink-400 hover:scale-110 transition-transform cursor-pointer"
-                  title="Highlight Pink"
+                  title="Pushti bilan belgilash"
                 />
               </div>
 
@@ -486,7 +486,7 @@ export default function ReaderPage({ params }: PageProps) {
               <form onSubmit={createNote} className="flex items-center gap-2">
                 <input
                   type="text"
-                  placeholder="Add note..."
+                  placeholder="Qayd qo'shish..."
                   value={noteInput}
                   onChange={(e) => setNoteInput(e.target.value)}
                   className="bg-transparent text-xs text-white placeholder-zinc-500 focus:outline-none w-28 py-1 px-1.5"
@@ -524,12 +524,12 @@ export default function ReaderPage({ params }: PageProps) {
                 <span className="text-xs uppercase font-bold tracking-widest text-violet-400">
                   {book.category}
                 </span>
-                <span className="text-xs text-zinc-500 font-semibold">{book.readTime} read</span>
+                <span className="text-xs text-zinc-500 font-semibold">{book.readTime} mutolaa vaqti</span>
               </div>
               <h2 className="text-3xl sm:text-4xl font-serif font-bold text-white mt-2 leading-tight">
                 {currentChapter.title}
               </h2>
-              <p className="text-sm text-zinc-500 mt-2">by {book.author}</p>
+              <p className="text-sm text-zinc-500 mt-2">muallif: {book.author}</p>
             </div>
 
             {/* Reading Content */}
@@ -583,7 +583,7 @@ export default function ReaderPage({ params }: PageProps) {
                 }`}
               >
                 <ChevronLeft className="w-4 h-4" />
-                Previous Chapter
+                Oldingi bob
               </button>
 
               <button
@@ -599,7 +599,7 @@ export default function ReaderPage({ params }: PageProps) {
                     : "bg-violet-600 border-violet-500 text-white hover:bg-violet-500 shadow-xl shadow-violet-500/10"
                 }`}
               >
-                Next Chapter
+                Keyingi bob
                 <ChevronLeft className="w-4 h-4 rotate-180" />
               </button>
             </div>
@@ -619,7 +619,7 @@ export default function ReaderPage({ params }: PageProps) {
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
                 <div className="flex items-center justify-between mb-8">
-                  <h3 className="text-lg font-bold text-white">Display Settings</h3>
+                  <h3 className="text-lg font-bold text-white">Ko'rinish sozlamalari</h3>
                   <button
                     onClick={() => setSettingsOpen(false)}
                     className="p-1 rounded-full hover:bg-white/5 text-zinc-500"
@@ -631,13 +631,13 @@ export default function ReaderPage({ params }: PageProps) {
                 <div className="space-y-6">
                   {/* Theme Adjuster */}
                   <div>
-                    <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Theme</h4>
+                    <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Mavzu</h4>
                     <div className="grid grid-cols-2 gap-2">
                       {[
-                        { id: "dark", name: "Dark", bg: "bg-[#09090c] text-white border-white/10" },
-                        { id: "light", name: "Light", bg: "bg-[#fafafa] text-zinc-900 border-black/5" },
-                        { id: "sepia", name: "Sepia", bg: "bg-[#f4ecd8] text-[#433422] border-[#433422]/10" },
-                        { id: "glass", name: "Glass", bg: "bg-gradient-to-tr from-slate-900 to-indigo-950 text-white border-white/10" }
+                        { id: "dark", name: "Tungi", bg: "bg-[#09090c] text-white border-white/10" },
+                        { id: "light", name: "Yorug'", bg: "bg-[#fafafa] text-zinc-900 border-black/5" },
+                        { id: "sepia", name: "Sepiya", bg: "bg-[#f4ecd8] text-[#433422] border-[#433422]/10" },
+                        { id: "glass", name: "Oyna", bg: "bg-gradient-to-tr from-slate-900 to-indigo-950 text-white border-white/10" }
                       ].map((t) => (
                         <button
                           key={t.id}
@@ -657,7 +657,7 @@ export default function ReaderPage({ params }: PageProps) {
 
                   {/* Font Family Adjuster */}
                   <div>
-                    <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Font Style</h4>
+                    <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Shrift uslubi</h4>
                     <div className="grid grid-cols-3 gap-2">
                       {[
                         { id: "sans", name: "Sans" },
@@ -685,7 +685,7 @@ export default function ReaderPage({ params }: PageProps) {
                   {/* Font Size Adjuster */}
                   <div>
                     <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3 flex justify-between">
-                      <span>Font Size</span>
+                      <span>Shrift hajmi</span>
                       <span className="text-zinc-400 font-bold">{fontSize}px</span>
                     </h4>
                     <div className="flex items-center justify-between gap-4">
@@ -731,7 +731,7 @@ export default function ReaderPage({ params }: PageProps) {
               >
                 <div>
                   <div className="flex items-center justify-between mb-8">
-                    <h3 className="text-lg font-bold text-white">My Annotations</h3>
+                    <h3 className="text-lg font-bold text-white">Mening qaydlarim</h3>
                     <button
                       onClick={() => setAnnotationsOpen(false)}
                       className="p-1 rounded-full hover:bg-white/5 text-zinc-500"
@@ -743,10 +743,10 @@ export default function ReaderPage({ params }: PageProps) {
                   {/* Highlights section */}
                   <div className="mb-6 max-h-[300px] overflow-y-auto pr-1">
                     <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
-                      Highlights ({highlights.length})
+                      Belgilashlar ({highlights.length})
                     </h4>
                     {highlights.length === 0 ? (
-                      <p className="text-xs text-zinc-500 italic">Select text in the editor to create highlights.</p>
+                      <p className="text-xs text-zinc-500 italic">Belgilashlar yaratish uchun matndan qism tanlang.</p>
                     ) : (
                       <div className="space-y-2">
                         {highlights.map((h) => (
@@ -772,10 +772,10 @@ export default function ReaderPage({ params }: PageProps) {
                   {/* Notes Section */}
                   <div className="max-h-[300px] overflow-y-auto pr-1">
                     <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">
-                      Notes ({notes.length})
+                      Qaydlar ({notes.length})
                     </h4>
                     {notes.length === 0 ? (
-                      <p className="text-xs text-zinc-500 italic">Add note inputs on highlights to keep summaries.</p>
+                      <p className="text-xs text-zinc-500 italic">Izoh qoldirish uchun belgilangan matnga qayd qo'shing.</p>
                     ) : (
                       <div className="space-y-2.5">
                         {notes.map((n) => (
@@ -796,7 +796,7 @@ export default function ReaderPage({ params }: PageProps) {
                 </div>
 
                 <div className="pt-6 border-t border-white/5 text-[10px] text-zinc-600 text-center">
-                  All annotations automatically backed up locally.
+                  Barcha qaydlar mahalliy xotirada saqlanadi.
                 </div>
               </motion.aside>
             </>

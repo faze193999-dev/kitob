@@ -32,9 +32,9 @@ export const TrendingCarousel: React.FC<TrendingCarouselProps> = ({ books }) => 
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl sm:text-3xl font-bold font-sans text-white tracking-tight">
-              Trending Stories
+              Trenddagi asarlar
             </h2>
-            <p className="text-zinc-500 text-sm mt-1">Most read titles this week</p>
+            <p className="text-zinc-500 text-sm mt-1">Ushbu haftada eng ko'p o'qilgan kitoblar</p>
           </div>
           
           <div className="flex items-center gap-3">
@@ -89,7 +89,7 @@ export const TrendingCarousel: React.FC<TrendingCarouselProps> = ({ books }) => 
                     {/* Read Now Overlay */}
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300 backdrop-blur-[2px]">
                       <span className="px-5 py-2.5 rounded-xl bg-violet-600 text-xs font-semibold text-white shadow-lg shadow-violet-500/30 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                        Read Now
+                        O'qish
                       </span>
                     </div>
                   </div>
@@ -109,17 +109,17 @@ export const TrendingCarousel: React.FC<TrendingCarouselProps> = ({ books }) => 
                     {book.title}
                   </h3>
                   
-                  <p className="text-xs text-zinc-400 mt-1">by {book.author}</p>
+                  <p className="text-xs text-zinc-400 mt-1">muallif: {book.author}</p>
                   
                   <p className="text-xs text-zinc-500 line-clamp-2 mt-3 leading-relaxed">
                     {book.description}
                   </p>
 
                   <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-zinc-500">
-                    <span>{book.readTime} read</span>
+                    <span>{book.readTime} o'qish</span>
                     <span className="flex items-center gap-1 text-[11px]">
                       <Eye className="w-3.5 h-3.5 text-zinc-600" />
-                      {book.views.toLocaleString()} reads
+                      {book.views.toLocaleString()} marta o'qildi
                     </span>
                   </div>
                 </div>

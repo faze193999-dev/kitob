@@ -121,7 +121,7 @@ export default function DashboardPage() {
               <button
                 onClick={() => setIsEditing(true)}
                 className="p-2 rounded-xl bg-white/5 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
-                title="Edit Profile"
+                title="Profilni tahrirlash"
               >
                 <Edit3 className="w-4 h-4" />
               </button>
@@ -135,11 +135,11 @@ export default function DashboardPage() {
               />
               <h2 className="text-xl font-bold text-white tracking-tight">{user.username}</h2>
               <span className="text-xs text-violet-400 font-semibold bg-violet-500/10 px-3 py-1 rounded-full mt-1.5 uppercase tracking-wider">
-                {user.role} member
+                {user.role === 'admin' ? 'Admin' : 'Oddiy'} a'zosi
               </span>
               
               <p className="text-sm text-zinc-400 mt-4 leading-relaxed font-sans max-w-[280px]">
-                {user.bio || "No profile bio written yet."}
+                {user.bio || "Profil ma'lumotlari hali kiritilmagan."}
               </p>
 
               <div className="w-full h-px bg-white/10 my-6" />
@@ -147,7 +147,7 @@ export default function DashboardPage() {
               <div className="w-full flex items-center justify-between text-xs text-zinc-500 font-medium">
                 <span className="flex items-center gap-1.5">
                   <Calendar className="w-4 h-4 text-zinc-600" />
-                  Joined {new Date(user.joinedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}
+                  Qo'shilgan sana: {new Date(user.joinedAt).toLocaleDateString("uz-UZ", { year: 'numeric', month: 'short' })}
                 </span>
                 <span>ID: {user.id}</span>
               </div>
@@ -159,29 +159,29 @@ export default function DashboardPage() {
             <div className="glass-panel p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
               <span className="flex items-center gap-1.5 text-xs text-zinc-500 font-semibold uppercase tracking-wider mb-2">
                 <Flame className="w-4 h-4 text-orange-500 fill-orange-500" />
-                Streak
+                Kunlik faollik
               </span>
               <div>
                 <h3 className="text-2xl font-bold text-white leading-none">{analytics.streak}</h3>
-                <span className="text-[10px] text-zinc-500 mt-1 block">days active</span>
+                <span className="text-[10px] text-zinc-500 mt-1 block">faol kunlar</span>
               </div>
             </div>
 
             <div className="glass-panel p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
               <span className="flex items-center gap-1.5 text-xs text-zinc-500 font-semibold uppercase tracking-wider mb-2">
                 <Clock className="w-4 h-4 text-indigo-400" />
-                Read Time
+                Mutolaa vaqti
               </span>
               <div>
                 <h3 className="text-2xl font-bold text-white leading-none">{analytics.totalMinutes}</h3>
-                <span className="text-[10px] text-zinc-500 mt-1 block">total minutes</span>
+                <span className="text-[10px] text-zinc-500 mt-1 block">jami daqiqa</span>
               </div>
             </div>
           </div>
 
           {/* Weekly Minutes Custom Bar Graph */}
           <div className="glass-panel p-5 rounded-3xl border border-white/5">
-            <h3 className="text-sm font-bold text-white tracking-wide mb-4">Weekly Intensity</h3>
+            <h3 className="text-sm font-bold text-white tracking-wide mb-4">Haftalik faollik</h3>
             
             {/* SVG custom bar graph */}
             <div className="h-44 w-full flex items-end justify-between gap-2.5 pt-4">
@@ -215,9 +215,9 @@ export default function DashboardPage() {
           {/* Tab Selection */}
           <div className="flex items-center gap-3 border-b border-white/5 pb-1">
             {[
-              { id: "progress", name: "In Progress", icon: BookOpen },
-              { id: "saved", name: "Bookmarks", icon: BookmarkIcon },
-              { id: "completed", name: "Completed", icon: CheckCircle2 }
+              { id: "progress", name: "O'qilmoqda", icon: BookOpen },
+              { id: "saved", name: "Xatcho'plar", icon: BookmarkIcon },
+              { id: "completed", name: "Tugallangan", icon: CheckCircle2 }
             ].map((tab) => {
               const isActive = activeTab === tab.id;
               const Icon = tab.icon;
@@ -286,7 +286,7 @@ export default function DashboardPage() {
                         {hasProgress && (
                           <div className="mt-4 space-y-1.5">
                             <div className="flex justify-between text-[10px] text-zinc-500 font-semibold">
-                              <span>Completed</span>
+                              <span>Tugallandi</span>
                               <span>{Math.round(progressVal)}%</span>
                             </div>
                             <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
@@ -300,12 +300,12 @@ export default function DashboardPage() {
                       </div>
 
                       <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
-                        <span className="text-xs text-zinc-500">{book.readTime} read</span>
+                        <span className="text-xs text-zinc-500">{book.readTime} mutolaa vaqti</span>
                         <Link
                           href={`/reader/${book.id}`}
                           className="px-4.5 py-2 rounded-xl bg-violet-600 text-white hover:bg-violet-500 text-xs font-semibold shadow-lg shadow-violet-600/15 transition-all"
                         >
-                          {hasProgress ? "Continue" : "Read Now"}
+                          {hasProgress ? "Davom etish" : "O'qish"}
                         </Link>
                       </div>
                     </motion.div>
@@ -314,12 +314,12 @@ export default function DashboardPage() {
               ) : (
                 <div className="col-span-2 py-16 text-center text-zinc-500 flex flex-col items-center justify-center gap-3">
                   <BookMarked className="w-10 h-10 text-zinc-700" />
-                  <p className="text-sm">No books found in this category.</p>
+                  <p className="text-sm">Ushbu ruknda kitob topilmadi.</p>
                   <Link
                     href="/"
                     className="px-4.5 py-2 rounded-xl border border-white/10 hover:border-violet-500 hover:text-white text-xs font-semibold transition-all mt-2"
                   >
-                    Browse Library Catalog
+                    Katalogga o'tish
                   </Link>
                 </div>
               )}
@@ -341,7 +341,7 @@ export default function DashboardPage() {
               exit={{ opacity: 0, scale: 0.95 }}
             >
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-bold text-white">Edit Profile Portal</h3>
+                <h3 className="text-lg font-bold text-white">Profilni tahrirlash</h3>
                 <button
                   onClick={() => setIsEditing(false)}
                   className="p-1 rounded-full hover:bg-white/5 text-zinc-500"
@@ -352,7 +352,7 @@ export default function DashboardPage() {
 
               <form onSubmit={handleProfileSave} className="space-y-4">
                 <div>
-                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-2">Display Username</label>
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-2">Foydalanuvchi nomi</label>
                   <input
                     type="text"
                     value={usernameInput}
@@ -362,13 +362,13 @@ export default function DashboardPage() {
                 </div>
 
                 <div>
-                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-2">Profile Bio</label>
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-2">Profil ma'lumotlari</label>
                   <textarea
                     rows={4}
                     value={bioInput}
                     onChange={(e) => setBioInput(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 transition-all resize-none font-sans"
-                    placeholder="Tell us about yourself..."
+                    placeholder="O'zingiz haqingizda yozing..."
                   />
                 </div>
 
@@ -376,7 +376,7 @@ export default function DashboardPage() {
                   type="submit"
                   className="w-full py-3.5 rounded-xl bg-violet-600 hover:bg-violet-500 font-semibold text-sm text-white shadow-xl shadow-violet-600/10 transition-all cursor-pointer mt-6"
                 >
-                  Save Changes
+                  O'zgarishlarni saqlash
                 </button>
               </form>
             </motion.div>

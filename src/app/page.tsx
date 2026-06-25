@@ -57,14 +57,14 @@ export default function Home() {
             
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/5 text-xs text-zinc-400 font-medium mb-6">
               <Sparkles className="w-3.5 h-3.5 text-violet-400" />
-              AI-Powered Search Index
+              Sun'iy intellekt asosidagi qidiruv
             </div>
             
             <h2 className="text-2xl sm:text-4xl font-bold font-sans text-white mb-4 tracking-tight leading-tight">
-              What will you discover today?
+              Bugun qanday kitob kashf etasiz?
             </h2>
             <p className="text-zinc-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
-              Instantly scan thousands of index nodes, author summaries, and full-text databases in milliseconds.
+              Kutubxona bazasini bir necha millisekundda qidiring, boblar va mualliflar bo'yicha tezkor natija oling.
             </p>
             
             <SearchBar />
@@ -96,32 +96,32 @@ export default function Home() {
               Book<span className="text-violet-500">Verse</span>
             </h3>
             <p className="text-zinc-500 text-sm max-w-sm leading-relaxed font-sans">
-              An immersive digital space designed to preserve, highlight, and elevate the written word. We craft reading interfaces that blend focus and beauty.
+              Yozma so'zning go'zalligi va chuqurligini saqlash, yoritish va yuksaltirish uchun mo'ljallangan oliy darajadagi raqamli makon. Biz diqqat jamlash va mutolaa go'zalligini birlashtiruvchi interfeyslarni yaratamiz.
             </p>
           </div>
           
           <div>
-            <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Platform</h4>
+            <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Platforma</h4>
             <div className="flex flex-col gap-2.5 text-sm text-zinc-500 font-medium">
-              <a href="#discover" className="hover:text-white transition-colors duration-200">Library Catalog</a>
-              <Link href="/dashboard" className="hover:text-white transition-colors duration-200">Personal Dashboard</Link>
-              <Link href="/auth" className="hover:text-white transition-colors duration-200">Membership login</Link>
+              <a href="#discover" className="hover:text-white transition-colors duration-200">Kutubxona katalogi</a>
+              <Link href="/dashboard" className="hover:text-white transition-colors duration-200">Boshqaruv paneli</Link>
+              <Link href="/auth" className="hover:text-white transition-colors duration-200">Tizimga kirish</Link>
             </div>
           </div>
           
           <div>
-            <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Legal</h4>
+            <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Huquqiy</h4>
             <div className="flex flex-col gap-2.5 text-sm text-zinc-500 font-medium">
-              <span className="cursor-pointer hover:text-white transition-colors duration-200">Terms of Service</span>
-              <span className="cursor-pointer hover:text-white transition-colors duration-200">Privacy Policy</span>
-              <span className="cursor-pointer hover:text-white transition-colors duration-200">Content Guidelines</span>
+              <span className="cursor-pointer hover:text-white transition-colors duration-200">Foydalanish shartlari</span>
+              <span className="cursor-pointer hover:text-white transition-colors duration-200">Maxfiylik siyosati</span>
+              <span className="cursor-pointer hover:text-white transition-colors duration-200">Kontent qoidalari</span>
             </div>
           </div>
         </div>
 
         <div className="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-600 font-medium">
-          <span>&copy; {new Date().getFullYear()} BookVerse Inc. All rights reserved.</span>
-          <span>Crafted for premium reading comfort.</span>
+          <span>&copy; {new Date().getFullYear()} BookVerse Inc. Barcha huquqlar himoyalangan.</span>
+          <span>Oliy darajadagi mutolaa qulayligi bilan yaratildi.</span>
         </div>
       </footer>
 

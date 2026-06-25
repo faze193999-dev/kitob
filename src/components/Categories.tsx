@@ -11,18 +11,18 @@ interface CategoriesProps {
 }
 
 const CATEGORIES_META = [
-  { name: "All", icon: BookMarked, color: "from-zinc-500 to-zinc-700" },
-  { name: "Technology", icon: Cpu, color: "from-violet-500 to-indigo-600" },
-  { name: "Business", icon: Briefcase, color: "from-amber-500 to-orange-600" },
-  { name: "Self-Development", icon: Sparkles, color: "from-rose-500 to-pink-600" },
-  { name: "Fiction", icon: Sparkles, color: "from-emerald-500 to-teal-600" },
-  { name: "Science", icon: Atom, color: "from-blue-500 to-cyan-600" }
+  { name: "Barchasi", icon: BookMarked, color: "from-zinc-500 to-zinc-700" },
+  { name: "Texnologiya", icon: Cpu, color: "from-violet-500 to-indigo-600" },
+  { name: "Biznes", icon: Briefcase, color: "from-amber-500 to-orange-600" },
+  { name: "Shaxsiy rivojlanish", icon: Sparkles, color: "from-rose-500 to-pink-600" },
+  { name: "Badiiy adabiyot", icon: Sparkles, color: "from-emerald-500 to-teal-600" },
+  { name: "Ilm-fan", icon: Atom, color: "from-blue-500 to-cyan-600" }
 ];
 
 export const Categories: React.FC<CategoriesProps> = ({ books }) => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("Barchasi");
 
-  const filteredBooks = selectedCategory === "All"
+  const filteredBooks = selectedCategory === "Barchasi"
     ? books
     : books.filter((b) => b.category.toLowerCase() === selectedCategory.toLowerCase());
 
@@ -32,9 +32,9 @@ export const Categories: React.FC<CategoriesProps> = ({ books }) => {
         {/* Title */}
         <div className="mb-10 text-center sm:text-left">
           <h2 className="text-2xl sm:text-3xl font-bold font-sans text-white tracking-tight">
-            Browse by Genre
+            Janrlar bo'yicha saralash
           </h2>
-          <p className="text-zinc-500 text-sm mt-1">Select a category to filter the library</p>
+          <p className="text-zinc-500 text-sm mt-1">Kutubxonani filtrlash uchun janrni tanlang</p>
         </div>
 
         {/* Category selector grid */}
@@ -110,7 +110,7 @@ export const Categories: React.FC<CategoriesProps> = ({ books }) => {
                   </div>
 
                   <div className="flex items-center justify-between gap-1 text-xs text-zinc-500 mb-1.5">
-                    <span>by {book.author}</span>
+                    <span>muallif: {book.author}</span>
                     <span className="flex items-center gap-0.5">
                       <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
                       <span className="text-zinc-300">{book.rating}</span>
@@ -127,12 +127,12 @@ export const Categories: React.FC<CategoriesProps> = ({ books }) => {
                 </div>
 
                 <div className="mt-5 pt-4 border-t border-white/5 flex items-center justify-between">
-                  <span className="text-xs text-zinc-500">{book.readTime} read</span>
+                  <span className="text-xs text-zinc-500">{book.readTime} o'qish</span>
                   <Link
                     href={`/reader/${book.id}`}
                     className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-zinc-200 group-hover:bg-violet-600 group-hover:text-white group-hover:border-violet-600 transition-all duration-300"
                   >
-                    Read Book
+                    Kitobni o'qish
                   </Link>
                 </div>
               </motion.div>

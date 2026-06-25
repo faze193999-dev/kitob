@@ -26,13 +26,13 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "BookVerse | Luxury Digital Reading Platform",
-  description: "Immerse yourself in a premium reading experience. Customize themes, highlight texts, track your analytics, and read thousands of classics and modern articles.",
-  keywords: ["BookVerse", "online reading", "digital book library", "EPUB reader", "PDF reader", "Medium reading style", "Next.js book app"],
-  authors: [{ name: "BookVerse Team" }],
+  title: "BookVerse | Oliy darajadagi raqamli mutolaa platformasi",
+  description: "Oliy darajadagi mutolaa tajribasiga sho'ng'ing. Mavzularni sozlang, matnlarni belgilang, tahlillaringizni kuzatib boring va minglab klassik hamda zamonaviy asarlarni o'qing.",
+  keywords: ["BookVerse", "onlayn mutolaa", "raqamli kutubxona", "EPUB o'quvchi", "PDF o'quvchi", "kitob mutolaasi", "Next.js kitob ilovasi"],
+  authors: [{ name: "BookVerse Jamoasi" }],
   openGraph: {
-    title: "BookVerse - Luxury Digital Reading Platform",
-    description: "Immerse yourself in a premium reading experience with custom settings, dark mode, bookmarks, and a fully featured admin dashboard.",
+    title: "BookVerse - Oliy darajadagi raqamli mutolaa platformasi",
+    description: "Maxsus sozlamalar, tungi rejim, xatcho'plar va to'liq jihozlangan admin paneli bilan oliy darajadagi mutolaa tajribasiga sho'ng'ing.",
     type: "website",
   },
 };
@@ -44,7 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="uz"
       className={`${outfit.variable} ${playfair.variable} ${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans select-none bg-[#050508] text-[#f4f4f5]">

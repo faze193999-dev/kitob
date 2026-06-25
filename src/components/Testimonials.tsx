@@ -6,21 +6,21 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const TESTIMONIALS_DATA = [
   {
-    quote: "BookVerse has completely redefined my digital reading rituals. The separation of reading notes, beautiful typography, and custom light/sepia options feels like an premium physical book blended with the speed of an iPad.",
+    quote: "BookVerse mening raqamli mutolaa odatlarimni butunlay o'zgartirdi. Qaydlar olish, ajoyib tipografiya va maxsus yorug'/sepia rejimlari xuddi planshet tezligi bilan birlashtirilgan premium jismoniy kitobni eslatadi.",
     author: "Maximilian Kross",
-    role: "Chief Architect, ArcTech",
+    role: "Bosh me'mor, ArcTech",
     avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100"
   },
   {
-    quote: "As a research student, the inline highlighting and instant notes saving have been invaluable. The interface is clean, dark, and beautifully quiet—allowing hours of focused study without eye strain.",
+    quote: "Tadqiqotchi talaba sifatida, matnni belgilash va qaydlarni bir zumda saqlab qolish men uchun juda foydali bo'ldi. Interfeys toza, qorong'i va tinch — bu ko'zni charchatmasdan soatlab diqqatni jamlashga yordam beradi.",
     author: "Clara Johansson",
-    role: "PhD Candidate, Stockholm University",
+    role: "PhD nomzodi, Stokgolm Universiteti",
     avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100"
   },
   {
-    quote: "The admin interface and custom EPUB layout is spectacular. I uploaded a 400-page custom engineering document, and the parsing was immediate and beautiful. This is a billion-dollar reading experience.",
+    quote: "Admin interfeysi va maxsus EPUB formati ajoyib darajada qilingan. Men 400 sahifalik muhandislik hujjatini yukladim va u darhol tahlil qilinib, chiroyli ko'rinishga keldi. Bu haqiqiy professional darajadagi mutolaa tajribasi.",
     author: "Sarah Jenkins",
-    role: "Director of Product, Medium Labs",
+    role: "Mahsulot bo'limi direktori, Medium Labs",
     avatar: "https://images.unsplash.com/photo-1548142813-c348350df52b?w=100"
   }
 ];

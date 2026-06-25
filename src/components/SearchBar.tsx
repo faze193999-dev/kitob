@@ -54,7 +54,7 @@ export const SearchBar: React.FC = () => {
         <Search className="absolute left-4 w-5 h-5 text-zinc-500" />
         <input
           type="text"
-          placeholder="Search by title, author, or category (e.g. Technology)..."
+          placeholder="Kitob nomi, muallif yoki janr bo'yicha qidirish (masalan: Texnologiya)..."
           value={query}
           onChange={(e) => {
             setQuery(e.target.value);
@@ -89,7 +89,7 @@ export const SearchBar: React.FC = () => {
             {results.length > 0 ? (
               <div className="flex flex-col gap-1.5">
                 <div className="px-3 py-1.5 text-xs font-semibold text-zinc-500 uppercase tracking-wider">
-                  Suggestions ({results.length})
+                  Qidiruv natijalari ({results.length})
                 </div>
                 {results.map((book) => (
                   <button
@@ -115,7 +115,7 @@ export const SearchBar: React.FC = () => {
                       <h4 className="text-sm font-semibold text-white truncate group-hover:text-violet-400 transition-colors duration-200">
                         {book.title}
                       </h4>
-                      <p className="text-xs text-zinc-400 truncate mt-0.5">by {book.author}</p>
+                      <p className="text-xs text-zinc-400 truncate mt-0.5">{book.author}</p>
                       <span className="inline-block px-2 py-0.5 text-[10px] font-semibold bg-white/5 border border-white/5 text-zinc-400 rounded-md mt-1">
                         {book.category}
                       </span>
@@ -128,7 +128,7 @@ export const SearchBar: React.FC = () => {
             ) : (
               <div className="py-8 text-center text-zinc-500 flex flex-col items-center justify-center gap-2">
                 <BookOpen className="w-8 h-8 text-zinc-700" />
-                <p className="text-sm">No books found matching &quot;{query}&quot;</p>
+                <p className="text-sm">&quot;{query}&quot; bo'yicha hech qanday kitob topilmadi</p>
               </div>
             )}
           </motion.div>

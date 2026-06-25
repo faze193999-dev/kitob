@@ -30,10 +30,10 @@ export default function AuthPage() {
       if (success) {
         router.push("/dashboard");
       } else {
-        setError("Invalid credentials. Try reader@bookverse.com");
+        setError("Email yoki parol noto'g'ri. reader@bookverse.com hisobini sinab ko'ring.");
       }
     } catch {
-      setError("An error occurred during authentication.");
+      setError("Avtorizatsiya jarayonida xatolik yuz berdi.");
     }
   };
 
@@ -45,7 +45,7 @@ export default function AuthPage() {
         router.push("/dashboard");
       }
     } catch {
-      setError("OAuth sign-in failed.");
+      setError("OAuth orqali kirish amalga oshmadi.");
     }
   };
 
@@ -68,7 +68,7 @@ export default function AuthPage() {
             Book<span className="text-violet-500">Verse</span>
           </Link>
           <p className="text-zinc-400 text-sm mt-2">
-            {isSignUp ? "Create your luxury reading portal" : "Immerse in your customized study"}
+            {isSignUp ? "Shaxsiy mutolaa hisobingizni yarating" : "Shaxsiy kutubxonangizga kiring"}
           </p>
         </div>
 
@@ -95,7 +95,7 @@ export default function AuthPage() {
                 <User className="absolute left-4 top-4 w-4 h-4 text-zinc-500" />
                 <input
                   type="text"
-                  placeholder="Username"
+                  placeholder="Foydalanuvchi nomi"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 focus:bg-white/8 transition-all"
@@ -108,7 +108,7 @@ export default function AuthPage() {
             <Mail className="absolute left-4 top-4 w-4 h-4 text-zinc-500" />
             <input
               type="email"
-              placeholder="Email address"
+              placeholder="Email manzili"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 focus:bg-white/8 transition-all"
@@ -119,7 +119,7 @@ export default function AuthPage() {
             <Lock className="absolute left-4 top-4 w-4 h-4 text-zinc-500" />
             <input
               type="password"
-              placeholder="Password"
+              placeholder="Parol"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 focus:bg-white/8 transition-all"
@@ -135,7 +135,7 @@ export default function AuthPage() {
               <span className="w-5 h-5 rounded-full border-2 border-white/20 border-t-white animate-spin" />
             ) : (
               <>
-                {isSignUp ? "Create Account" : "Access Library"}
+                {isSignUp ? "Hisob yaratish" : "Kutubxonaga kirish"}
                 <ArrowRight className="w-4 h-4" />
               </>
             )}
@@ -145,7 +145,7 @@ export default function AuthPage() {
         <div className="relative my-6 text-center">
           <span className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-px bg-white/10" />
           <span className="relative z-10 px-3 bg-[#09090c] text-xs font-semibold text-zinc-500 uppercase tracking-widest">
-            or continue with
+            yoki quyidagilar bilan
           </span>
         </div>
 
@@ -175,22 +175,22 @@ export default function AuthPage() {
         <div className="text-center mt-8 text-xs font-medium text-zinc-500">
           {isSignUp ? (
             <p>
-              Already have an account?{" "}
+              Hisobingiz bormi?{" "}
               <button
                 onClick={() => setIsSignUp(false)}
                 className="text-violet-400 hover:text-violet-300 font-bold ml-1 cursor-pointer"
               >
-                Sign In
+                Kirish
               </button>
             </p>
           ) : (
             <p>
-              Don&apos;t have an account?{" "}
+              Hisobingiz yo'qmi?{" "}
               <button
                 onClick={() => setIsSignUp(true)}
                 className="text-violet-400 hover:text-violet-300 font-bold ml-1 cursor-pointer"
               >
-                Create Account
+                Ro'yxatdan o'tish
               </button>
             </p>
           )}

@@ -49,16 +49,16 @@ export const HeroSection: React.FC = () => {
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-semibold tracking-wider text-violet-400 uppercase mb-6"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-violet-400 animate-ping" />
-            Introducing BookVerse 2.0
+            BookVerse 2.0 taqdimoti
           </motion.div>
 
           <motion.h1
             variants={itemVariants}
             className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight leading-none mb-6 font-sans text-white"
           >
-            The Luxury of <br />
+            Mutolaaning Oliy <br />
             <span className="bg-gradient-to-r from-violet-400 via-indigo-300 to-cyan-400 bg-clip-text text-transparent">
-              Pure Reading
+              Hashamati
             </span>
           </motion.h1>
 
@@ -66,7 +66,7 @@ export const HeroSection: React.FC = () => {
             variants={itemVariants}
             className="text-lg text-zinc-400 max-w-xl mb-8 leading-relaxed font-sans"
           >
-            Experience a distraction-free, beautifully curated reading ecosystem designed for intellectual growth. Tailored themes, intelligent reading metrics, and annotations designed for critical thinkers.
+            Chalg'ituvchi omillarsiz, intellektual rivojlanish uchun maxsus yaratilgan kitob mutolaasi ekotizimini his eting. Shaxsiy sozlamalar va tahliliy mutolaa ma'lumotlari.
           </motion.p>
 
           <motion.div 
@@ -84,7 +84,7 @@ export const HeroSection: React.FC = () => {
                 className="px-8 py-4 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold text-sm tracking-wide shadow-xl shadow-violet-500/20 hover:shadow-violet-500/35 transition-all duration-300 flex items-center gap-2"
               >
                 <BookOpen className="w-4 h-4" />
-                Start Reading Free
+                Bepul o'qishni boshlash
               </Link>
             </motion.div>
 
@@ -98,7 +98,7 @@ export const HeroSection: React.FC = () => {
                 className="px-8 py-4 rounded-2xl bg-white/5 border border-white/10 text-zinc-300 font-semibold text-sm tracking-wide hover:text-white hover:border-white/20 transition-all duration-300 flex items-center gap-2"
               >
                 <Compass className="w-4 h-4" />
-                Explore Library
+                Kutubxonani ko'rish
               </a>
             </motion.div>
           </motion.div>
@@ -172,7 +172,7 @@ export const HeroSection: React.FC = () => {
             }}
           >
             <div className="w-full h-full rounded-2xl overflow-hidden border border-white/5 bg-gradient-to-tr from-indigo-600 to-purple-800 flex flex-col justify-between p-6">
-              <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-300">Sci-Fi Novel</span>
+              <span className="text-[10px] uppercase font-bold tracking-wider text-indigo-300">Ilmiy-fantastika</span>
               <div>
                 <h3 className="font-serif font-semibold text-base leading-tight text-white mb-1">Echoes of the Future</h3>
                 <p className="text-[10px] text-zinc-400">Sarah Elson</p>

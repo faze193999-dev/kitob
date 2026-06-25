@@ -33,9 +33,9 @@ export default function AdminPage() {
   const [isAddingBook, setIsAddingBook] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [newAuthor, setNewAuthor] = useState("");
-  const [newCategory, setNewCategory] = useState("Technology");
+  const [newCategory, setNewCategory] = useState("Texnologiya");
   const [newDescription, setNewDescription] = useState("");
-  const [newReadTime, setNewReadTime] = useState("20 mins");
+  const [newReadTime, setNewReadTime] = useState("20 daqiqa");
   const [newChaptersContent, setNewChaptersContent] = useState("");
 
   // File Upload states
@@ -65,8 +65,8 @@ export default function AdminPage() {
     const finalChapters = parsedChapters.length > 0 ? parsedChapters : [
       {
         id: 1,
-        title: "Chapter 1: Introduction",
-        content: newChaptersContent || `This is chapter 1 of ${newTitle}. Structured reading content is immediately accessible in BookVerse.`
+        title: "1-bob: Kirish",
+        content: newChaptersContent || `Bu - "${newTitle}" kitobining 1-bobi. Tizimli o'qish kontenti BookVerse kutubxonasida tezda taqdim etiladi.`
       }
     ];
 
@@ -75,7 +75,7 @@ export default function AdminPage() {
       author: newAuthor,
       category: newCategory,
       coverUrl: "", // Defaults to modern CSS gradients
-      description: newDescription || "No description provided.",
+      description: newDescription || "Tavsif kiritilmagan.",
       readTime: newReadTime,
       chapters: finalChapters.map((ch, idx) => ({ id: idx + 1, ...ch })),
       publishedYear: new Date().getFullYear(),
@@ -149,12 +149,12 @@ export default function AdminPage() {
           // Generate mocked parsed chapters based on filename
           setParsedChapters([
             {
-              title: "Chapter 1: Document Extract",
-              content: `This chapter was successfully parsed from the document "${fileName}".\n\nBookVerse metadata extraction module verified formatting headers, aligned structural indentation, and cataloged text blocks. The parsed paragraphs are fully compliant with Medium/Kindle comfort criteria. Enjoy your reading experience.`
+              title: "1-bob: Hujjatdan parcha",
+              content: `Ushbu bob "${fileName}" hujjatidan muvaffaqiyatli tahlil qilindi.\n\nBookVerse metama'lumotlarni olish moduli format sarlavhalarini tekshirdi, tizimli chekinishlarni tekshirdi va matn bloklarini katalogladi. Tahlil qilingan paragraflar Medium/Kindle o'qish qulayligi mezonlariga to'liq mos keladi. Yoqimli mutolaa tilaymiz.`
             },
             {
-              title: "Chapter 2: Appendix A",
-              content: "Additional telemetry, data notes, and content segments extracted from the footer notes."
+              title: "2-bob: A ilova",
+              content: "Hujjat yakunidan olingan qo'shimcha ma'lumotlar, qaydlar va kontent segmentlari."
             }
           ]);
           return 100;
@@ -177,12 +177,12 @@ export default function AdminPage() {
     return (
       <div className="min-h-screen bg-[#050508] flex flex-col items-center justify-center text-center px-6">
         <XCircle className="w-16 h-16 text-rose-500 mb-6" />
-        <h2 className="text-2xl font-bold text-white mb-2">Access Restricted</h2>
+        <h2 className="text-2xl font-bold text-white mb-2">Kirish taqiqlangan</h2>
         <p className="text-zinc-500 text-sm max-w-sm mb-6">
-          You need administrator level clearance permissions to access the platform command.
+          Ushbu sahifaga kirish uchun administrator ruxsatingiz bo'lishi kerak.
         </p>
         <Link href="/" className="px-5 py-3 rounded-2xl bg-white/5 border border-white/10 text-white font-semibold text-sm hover:bg-white/10 transition-all">
-          Return to Deck
+          Bosh sahifaga qaytish
         </Link>
       </div>
     );
@@ -199,15 +199,15 @@ export default function AdminPage() {
         {/* Portal Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white tracking-tight leading-none">Admin Console</h1>
-            <p className="text-zinc-500 text-sm mt-2">Manage library volumes, user scopes, and metrics telemetry</p>
+            <h1 className="text-3xl font-bold text-white tracking-tight leading-none">Boshqaruv paneli</h1>
+            <p className="text-zinc-500 text-sm mt-2">Kutubxona kitoblari, foydalanuvchilar va metrika telemetriyasini boshqarish</p>
           </div>
 
           <div className="flex items-center gap-2">
             {[
-              { id: "analytics", name: "Analytics" },
-              { id: "books", name: "Volumes" },
-              { id: "users", name: "Users" }
+              { id: "analytics", name: "Tahlillar" },
+              { id: "books", name: "Kitoblar" },
+              { id: "users", name: "Foydalanuvchilar" }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -230,7 +230,7 @@ export default function AdminPage() {
             {/* Stat Cards */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               <div className="glass-panel p-5 rounded-2xl border border-white/5">
-                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider block mb-2">Total Income</span>
+                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider block mb-2">Jami daromad</span>
                 <div className="flex items-baseline gap-1 text-white">
                   <DollarSign className="w-5 h-5 text-violet-400" />
                   <span className="text-3xl font-bold">{stats.currentRevenue.toLocaleString()}</span>
@@ -238,7 +238,7 @@ export default function AdminPage() {
               </div>
 
               <div className="glass-panel p-5 rounded-2xl border border-white/5">
-                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider block mb-2">Platform Reads</span>
+                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider block mb-2">Mutolaalar soni</span>
                 <div className="flex items-baseline gap-1 text-white">
                   <BookOpen className="w-5 h-5 text-indigo-400" />
                   <span className="text-3xl font-bold">{stats.totalViews.toLocaleString()}</span>
@@ -246,7 +246,7 @@ export default function AdminPage() {
               </div>
 
               <div className="glass-panel p-5 rounded-2xl border border-white/5">
-                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider block mb-2">Subscribed Users</span>
+                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider block mb-2">Ro'yxatdan o'tganlar</span>
                 <div className="flex items-baseline gap-1 text-white">
                   <Users className="w-5 h-5 text-cyan-400" />
                   <span className="text-3xl font-bold">{stats.totalReaders.toLocaleString()}</span>
@@ -254,7 +254,7 @@ export default function AdminPage() {
               </div>
 
               <div className="glass-panel p-5 rounded-2xl border border-white/5">
-                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider block mb-2">Active Catalog</span>
+                <span className="text-zinc-500 text-xs font-semibold uppercase tracking-wider block mb-2">Faol kitoblar</span>
                 <div className="flex items-baseline gap-1 text-white">
                   <TrendingUp className="w-5 h-5 text-emerald-400" />
                   <span className="text-3xl font-bold">{stats.totalBooks}</span>
@@ -264,7 +264,7 @@ export default function AdminPage() {
 
             {/* Revenue Telemetry Area Chart (SVG Custom Chart) */}
             <div className="glass-panel p-6 rounded-3xl border border-white/5">
-              <h3 className="text-sm font-bold text-white mb-6">Revenue Growth Telemetry</h3>
+              <h3 className="text-sm font-bold text-white mb-6">Daromad o'sishi telemetriyasi</h3>
               
               <div className="h-64 w-full flex items-end justify-between gap-6 pt-4 relative">
                 {/* Horizontal baseline grids */}
@@ -301,13 +301,13 @@ export default function AdminPage() {
         {activeTab === "books" && (
           <div className="space-y-6">
             <div className="flex items-center justify-between border-b border-white/5 pb-4">
-              <h2 className="text-xl font-bold text-white">Library Volume Catalog ({books.length})</h2>
+                <h2 className="text-xl font-bold text-white">Kutubxona kitoblari katalogi ({books.length})</h2>
               <button
                 onClick={() => setIsAddingBook(true)}
                 className="px-4 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold flex items-center gap-1.5 shadow-lg shadow-violet-600/10 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
-                Add New Volume
+                Yangi kitob qo'shish
               </button>
             </div>
 
@@ -316,11 +316,11 @@ export default function AdminPage() {
                 <table className="w-full text-left border-collapse text-sm">
                   <thead>
                     <tr className="border-b border-white/10 bg-white/3">
-                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Title & Author</th>
-                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Category</th>
-                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Views</th>
-                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Rating</th>
-                      <th className="p-4 font-bold text-zinc-400 text-center uppercase tracking-widest text-[10px]">Actions</th>
+                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Nomi va muallifi</th>
+                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Turkum</th>
+                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Ko'rishlar</th>
+                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Reyting</th>
+                      <th className="p-4 font-bold text-zinc-400 text-center uppercase tracking-widest text-[10px]">Amallar</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -353,7 +353,7 @@ export default function AdminPage() {
                             <button
                               onClick={() => handleDeleteBook(book.id)}
                               className="p-2 rounded-lg bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 transition-all cursor-pointer"
-                              title="Delete Book"
+                              title="Kitobni o'chirish"
                             >
                               <Trash2 className="w-4 h-4" />
                             </button>
@@ -372,7 +372,7 @@ export default function AdminPage() {
         {activeTab === "users" && (
           <div className="space-y-6">
             <div className="border-b border-white/5 pb-4">
-              <h2 className="text-xl font-bold text-white font-sans">User Database Roster</h2>
+              <h2 className="text-xl font-bold text-white font-sans">Foydalanuvchilar ro'yxati</h2>
             </div>
 
             <div className="glass-panel rounded-3xl overflow-hidden border border-white/5">
@@ -380,11 +380,11 @@ export default function AdminPage() {
                 <table className="w-full text-left border-collapse text-sm">
                   <thead>
                     <tr className="border-b border-white/10 bg-white/3">
-                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">User Profile</th>
-                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Email Address</th>
-                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Joined Date</th>
-                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Access Role</th>
-                      <th className="p-4 font-bold text-zinc-400 text-center uppercase tracking-widest text-[10px]">Change Role</th>
+                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Foydalanuvchi profili</th>
+                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">E-pochta manzili</th>
+                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Qo'shilgan sana</th>
+                      <th className="p-4 font-bold text-zinc-400 uppercase tracking-widest text-[10px]">Ruxsat roli</th>
+                      <th className="p-4 font-bold text-zinc-400 text-center uppercase tracking-widest text-[10px]">Rolni o'zgartirish</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -402,7 +402,7 @@ export default function AdminPage() {
                               ? "bg-violet-500/15 text-violet-400 border border-violet-500/20"
                               : "bg-white/5 text-zinc-400 border border-white/5"
                           }`}>
-                            {usr.role}
+                            {usr.role === "admin" ? "Admin" : "Foydalanuvchi"}
                           </span>
                         </td>
                         <td className="p-4">
@@ -443,7 +443,7 @@ export default function AdminPage() {
               exit={{ opacity: 0, scale: 0.95 }}
             >
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-white">Create Volume Entry</h3>
+                <h3 className="text-xl font-bold text-white">Yangi kitob qo'shish</h3>
                 <button
                   onClick={() => setIsAddingBook(false)}
                   className="p-1 rounded-full hover:bg-white/5 text-zinc-500"
@@ -469,7 +469,7 @@ export default function AdminPage() {
                   {isParsing ? (
                     <div className="w-full max-w-xs space-y-2">
                       <div className="flex justify-between text-xs text-zinc-500 font-semibold">
-                        <span>Parsing document text segments...</span>
+                        <span>Hujjat matni tahlil qilinmoqda...</span>
                         <span>{parseProgress}%</span>
                       </div>
                       <div className="h-1 bg-white/5 w-full rounded-full overflow-hidden">
@@ -479,23 +479,23 @@ export default function AdminPage() {
                   ) : uploadedFileName ? (
                     <div className="flex items-center gap-2 text-xs text-emerald-400 font-semibold bg-emerald-500/10 px-3 py-1.5 rounded-full">
                       <FileText className="w-4 h-4" />
-                      Parsed successfully: {uploadedFileName}
+                      Muvaffaqiyatli tahlil qilindi: {uploadedFileName}
                     </div>
                   ) : (
                     <>
-                      <p className="text-xs text-zinc-300 font-semibold">Drag & drop your EPUB or PDF volume here</p>
-                      <p className="text-[10px] text-zinc-500 mt-1">or click to browse local catalog files (.pdf, .epub, .txt)</p>
+                      <p className="text-xs text-zinc-300 font-semibold">EPUB yoki PDF formatdagi kitobingizni bu yerga tortib olib keling</p>
+                      <p className="text-[10px] text-zinc-500 mt-1">yoki faylni tanlash uchun bosing (.pdf, .epub, .txt)</p>
                     </>
                   )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Book Title</label>
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Kitob nomi</label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. The Odyssey of Code"
+                      placeholder="masalan: Al-Kimyogar"
                       value={newTitle}
                       onChange={(e) => setNewTitle(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500"
@@ -503,11 +503,11 @@ export default function AdminPage() {
                   </div>
                   
                   <div>
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Author Name</label>
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Muallif ismi</label>
                     <input
                       type="text"
                       required
-                      placeholder="e.g. Elena Rostova"
+                      placeholder="masalan: O'tkir Hoshimov"
                       value={newAuthor}
                       onChange={(e) => setNewAuthor(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500"
@@ -517,13 +517,13 @@ export default function AdminPage() {
 
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Genre Category</label>
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Janr / Turkum</label>
                     <select
                       value={newCategory}
                       onChange={(e) => setNewCategory(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-zinc-900 border border-white/10 text-zinc-300 text-sm focus:outline-none focus:border-violet-500"
                     >
-                      {["Technology", "Business", "Self-Development", "Fiction", "Science"].map((cat) => (
+                      {["Texnologiya", "Biznes", "Shaxsiy rivojlanish", "Badiiy adabiyot", "Ilm-fan"].map((cat) => (
                         <option key={cat} value={cat}>
                           {cat}
                         </option>
@@ -532,10 +532,10 @@ export default function AdminPage() {
                   </div>
 
                   <div>
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Estimated Read Time</label>
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Mutolaa vaqti</label>
                     <input
                       type="text"
-                      placeholder="e.g. 25 mins"
+                      placeholder="masalan: 25 daqiqa"
                       value={newReadTime}
                       onChange={(e) => setNewReadTime(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500"
@@ -544,10 +544,10 @@ export default function AdminPage() {
                 </div>
 
                 <div>
-                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Book Short Description</label>
+                  <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Kitobning qisqacha tavsifi</label>
                   <textarea
                     rows={2}
-                    placeholder="Short meta description summary..."
+                    placeholder="Kitob haqida qisqacha ma'lumot..."
                     value={newDescription}
                     onChange={(e) => setNewDescription(e.target.value)}
                     className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 resize-none font-sans"
@@ -556,10 +556,10 @@ export default function AdminPage() {
 
                 {parsedChapters.length === 0 && (
                   <div>
-                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Chapter Content text</label>
+                    <label className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest block mb-2">Bob mazmuni</label>
                     <textarea
                       rows={4}
-                      placeholder="Paste text contents here to instantiate readable chapters..."
+                      placeholder="O'qiladigan boblarni yaratish uchun matnni bu yerga kiriting..."
                       value={newChaptersContent}
                       onChange={(e) => setNewChaptersContent(e.target.value)}
                       className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 resize-none font-sans"
@@ -571,7 +571,7 @@ export default function AdminPage() {
                   type="submit"
                   className="w-full py-4 rounded-xl bg-violet-600 hover:bg-violet-500 font-semibold text-sm text-white shadow-xl shadow-violet-600/10 transition-all cursor-pointer mt-4"
                 >
-                  Create Volume Entry
+                  Kitobni saqlash
                 </button>
               </form>
             </motion.div>
