@@ -96,15 +96,6 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
             );
           })}
 
-          {user?.role === "admin" && (
-            <Link
-              href="/admin"
-              className={`text-sm font-medium tracking-wide transition-colors duration-300 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-violet-500/20 bg-violet-500/5 text-violet-400 hover:bg-violet-500/10 hover:text-violet-300`}
-            >
-              <LayoutDashboard className="w-3.5 h-3.5" />
-              Admin Portal
-            </Link>
-          )}
         </nav>
 
         {/* Right side items */}
@@ -129,6 +120,17 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
             >
               <Sliders className="w-4 h-4" />
             </button>
+          )}
+
+          {/* Admin Portal Button */}
+          {user?.role === "admin" && (
+            <Link
+              href="/admin"
+              className="px-4.5 py-2.5 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400 hover:bg-violet-600/20 hover:text-violet-300 text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5"
+            >
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              Admin Portal
+            </Link>
           )}
 
           {/* Auth Controls */}
