@@ -1,65 +1,146 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { BookVerseDB, Book } from "@/lib/db";
+import { Navbar } from "@/components/Navbar";
+import { HeroSection } from "@/components/HeroSection";
+import { SearchBar } from "@/components/SearchBar";
+import { TrendingCarousel } from "@/components/TrendingCarousel";
+import { Categories } from "@/components/Categories";
+import { Authors } from "@/components/Authors";
+import { StatsCounter } from "@/components/StatsCounter";
+import { Testimonials } from "@/components/Testimonials";
+import { motion, AnimatePresence } from "framer-motion";
+import { Sparkles, ArrowUp } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  useEffect(() => {
+    // Fetch books from simulated db
+    setBooks(BookVerseDB.getBooks());
+
+    // Scroll listener for Top button
+    const handleScroll = () => {
+      setShowScrollTop(window.scrollY > 400);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div className="min-h-screen bg-[#050508] relative selection:bg-violet-600/30">
+      {/* Ambient backgrounds */}
+      <div className="absolute top-[30%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-indigo-600/5 blur-[150px] pointer-events-none" />
+      <div className="absolute top-[60%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-violet-600/5 blur-[150px] pointer-events-none" />
+
+      {/* Navigation */}
+      <Navbar onSearchClick={() => document.getElementById("search-section")?.scrollIntoView({ behavior: "smooth" })} />
+
+      {/* Hero Section */}
+      <HeroSection />
+
+      {/* Main Content Containers */}
+      <main className="relative z-10">
+        
+        {/* Search Bar Section */}
+        <section id="search-section" className="py-12 max-w-7xl mx-auto px-6 scroll-mt-24">
+          <div className="glass-panel p-8 sm:p-12 rounded-[32px] text-center border border-white/5 relative overflow-hidden">
+            {/* Ambient inner glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-24 bg-gradient-to-b from-violet-500/10 to-transparent blur-xl pointer-events-none" />
+            
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/5 border border-white/5 text-xs text-zinc-400 font-medium mb-6">
+              <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+              AI-Powered Search Index
+            </div>
+            
+            <h2 className="text-2xl sm:text-4xl font-bold font-sans text-white mb-4 tracking-tight leading-tight">
+              What will you discover today?
+            </h2>
+            <p className="text-zinc-400 text-sm max-w-md mx-auto mb-8 leading-relaxed">
+              Instantly scan thousands of index nodes, author summaries, and full-text databases in milliseconds.
+            </p>
+            
+            <SearchBar />
+          </div>
+        </section>
+
+        {/* Trending Slider */}
+        <TrendingCarousel books={books} />
+
+        {/* Genres & Library Selector */}
+        <Categories books={books} />
+
+        {/* Stats Counter */}
+        <StatsCounter />
+
+        {/* Featured Thinkers */}
+        <Authors />
+
+        {/* Testimonials */}
+        <Testimonials />
+
       </main>
+
+      {/* Footer */}
+      <footer className="border-t border-white/5 bg-black/40 py-12 relative z-10">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="md:col-span-2">
+            <h3 className="text-lg font-bold text-white tracking-tight mb-4">
+              Book<span className="text-violet-500">Verse</span>
+            </h3>
+            <p className="text-zinc-500 text-sm max-w-sm leading-relaxed font-sans">
+              An immersive digital space designed to preserve, highlight, and elevate the written word. We craft reading interfaces that blend focus and beauty.
+            </p>
+          </div>
+          
+          <div>
+            <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Platform</h4>
+            <div className="flex flex-col gap-2.5 text-sm text-zinc-500 font-medium">
+              <a href="#discover" className="hover:text-white transition-colors duration-200">Library Catalog</a>
+              <Link href="/dashboard" className="hover:text-white transition-colors duration-200">Personal Dashboard</Link>
+              <Link href="/auth" className="hover:text-white transition-colors duration-200">Membership login</Link>
+            </div>
+          </div>
+          
+          <div>
+            <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-4">Legal</h4>
+            <div className="flex flex-col gap-2.5 text-sm text-zinc-500 font-medium">
+              <span className="cursor-pointer hover:text-white transition-colors duration-200">Terms of Service</span>
+              <span className="cursor-pointer hover:text-white transition-colors duration-200">Privacy Policy</span>
+              <span className="cursor-pointer hover:text-white transition-colors duration-200">Content Guidelines</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 mt-12 pt-8 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-zinc-600 font-medium">
+          <span>&copy; {new Date().getFullYear()} BookVerse Inc. All rights reserved.</span>
+          <span>Crafted for premium reading comfort.</span>
+        </div>
+      </footer>
+
+      {/* Scroll to top button */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.button
+            onClick={scrollToTop}
+            className="fixed bottom-6 right-6 p-3 rounded-xl bg-violet-600 border border-violet-500 text-white shadow-xl shadow-violet-500/20 z-50 cursor-pointer"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ArrowUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

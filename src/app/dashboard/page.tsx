@@ -1,0 +1,379 @@
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { BookVerseDB, Book, ReadingProgress, Bookmark } from "@/lib/db";
+import { Navbar } from "@/components/Navbar";
+import {
+  BookOpen,
+  Calendar,
+  Flame,
+  Award,
+  Clock,
+  Edit3,
+  Bookmark as BookmarkIcon,
+  CheckCircle2,
+  BookMarked,
+  X
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
+
+export default function DashboardPage() {
+  const { user, updateUserProfile, loading } = useAuth();
+  
+  // Library Tabs: 'progress' | 'saved' | 'completed'
+  const [activeTab, setActiveTab] = useState<"progress" | "saved" | "completed">("progress");
+  
+  const [books, setBooks] = useState<Book[]>([]);
+  const [progressList, setProgressList] = useState<ReadingProgress[]>([]);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
+  const [analytics, setAnalytics] = useState<any>(null);
+
+  // Profile Edit modal
+  const [isEditing, setIsEditing] = useState(false);
+  const [usernameInput, setUsernameInput] = useState("");
+  const [bioInput, setBioInput] = useState("");
+
+  useEffect(() => {
+    if (!user) return;
+    
+    // Load data from DB
+    const allBooks = BookVerseDB.getBooks();
+    setBooks(allBooks);
+    setProgressList(BookVerseDB.getAllProgress(user.id));
+    setBookmarks(BookVerseDB.getBookmarks(user.id));
+    setAnalytics(BookVerseDB.getAnalytics(user.id));
+
+    // Populate profile inputs
+    setUsernameInput(user.username);
+    setBioInput(user.bio || "");
+  }, [user]);
+
+  const handleProfileSave = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!usernameInput.trim()) return;
+    updateUserProfile(usernameInput, bioInput);
+    setIsEditing(false);
+  };
+
+  if (loading || !user || !analytics) {
+    return (
+      <div className="min-h-screen bg-[#050508] flex items-center justify-center">
+        <div className="w-12 h-12 rounded-full border-4 border-violet-500/20 border-t-violet-500 animate-spin" />
+      </div>
+    );
+  }
+
+  // Filter books based on active tab
+  const getFilteredBooks = () => {
+    if (activeTab === "progress") {
+      // Books with progress > 0 and < 99%
+      return progressList
+        .filter((p) => p.percentage > 0 && p.percentage < 99)
+        .map((p) => {
+          const book = books.find((b) => b.id === p.bookId);
+          return book ? { ...book, progressPercent: p.percentage } : null;
+        })
+        .filter((b) => b !== null) as (Book & { progressPercent: number })[];
+    } else if (activeTab === "completed") {
+      // Books with progress >= 99%
+      return progressList
+        .filter((p) => p.percentage >= 99)
+        .map((p) => {
+          const book = books.find((b) => b.id === p.bookId);
+          return book ? book : null;
+        })
+        .filter((b) => b !== null) as Book[];
+    } else {
+      // Bookmarked books
+      const bookmarkedIds = Array.from(new Set(bookmarks.map((b) => b.bookId)));
+      return bookmarkedIds
+        .map((id) => books.find((b) => b.id === id))
+        .filter((b) => b !== undefined) as Book[];
+    }
+  };
+
+  const filteredItems = getFilteredBooks();
+
+  // Find max minutes for charting scale
+  const maxChartMinutes = Math.max(...analytics.weeklyActivity.map((d: any) => d.minutes), 10);
+
+  return (
+    <div className="min-h-screen bg-[#050508] pt-24 pb-12 selection:bg-violet-600/30">
+      <Navbar />
+
+      <main className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4">
+        {/* Left Column: Profile Card & Reading Stats Charts */}
+        <div className="lg:col-span-4 flex flex-col gap-6">
+          {/* Profile Card */}
+          <div className="glass-panel p-6 rounded-3xl border border-white/5 relative overflow-hidden">
+            <div className="absolute top-4 right-4">
+              <button
+                onClick={() => setIsEditing(true)}
+                className="p-2 rounded-xl bg-white/5 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                title="Edit Profile"
+              >
+                <Edit3 className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="flex flex-col items-center text-center">
+              <img
+                src={user.avatarUrl}
+                alt={user.username}
+                className="w-20 h-20 rounded-2xl object-cover ring-2 ring-violet-500/30 mb-4"
+              />
+              <h2 className="text-xl font-bold text-white tracking-tight">{user.username}</h2>
+              <span className="text-xs text-violet-400 font-semibold bg-violet-500/10 px-3 py-1 rounded-full mt-1.5 uppercase tracking-wider">
+                {user.role} member
+              </span>
+              
+              <p className="text-sm text-zinc-400 mt-4 leading-relaxed font-sans max-w-[280px]">
+                {user.bio || "No profile bio written yet."}
+              </p>
+
+              <div className="w-full h-px bg-white/10 my-6" />
+
+              <div className="w-full flex items-center justify-between text-xs text-zinc-500 font-medium">
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="w-4 h-4 text-zinc-600" />
+                  Joined {new Date(user.joinedAt).toLocaleDateString(undefined, { year: 'numeric', month: 'short' })}
+                </span>
+                <span>ID: {user.id}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Reading Statistics Cards */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="glass-panel p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
+              <span className="flex items-center gap-1.5 text-xs text-zinc-500 font-semibold uppercase tracking-wider mb-2">
+                <Flame className="w-4 h-4 text-orange-500 fill-orange-500" />
+                Streak
+              </span>
+              <div>
+                <h3 className="text-2xl font-bold text-white leading-none">{analytics.streak}</h3>
+                <span className="text-[10px] text-zinc-500 mt-1 block">days active</span>
+              </div>
+            </div>
+
+            <div className="glass-panel p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
+              <span className="flex items-center gap-1.5 text-xs text-zinc-500 font-semibold uppercase tracking-wider mb-2">
+                <Clock className="w-4 h-4 text-indigo-400" />
+                Read Time
+              </span>
+              <div>
+                <h3 className="text-2xl font-bold text-white leading-none">{analytics.totalMinutes}</h3>
+                <span className="text-[10px] text-zinc-500 mt-1 block">total minutes</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Weekly Minutes Custom Bar Graph */}
+          <div className="glass-panel p-5 rounded-3xl border border-white/5">
+            <h3 className="text-sm font-bold text-white tracking-wide mb-4">Weekly Intensity</h3>
+            
+            {/* SVG custom bar graph */}
+            <div className="h-44 w-full flex items-end justify-between gap-2.5 pt-4">
+              {analytics.weeklyActivity.map((day: any, idx: number) => {
+                const heightPercent = (day.minutes / maxChartMinutes) * 100;
+                return (
+                  <div key={day.day} className="flex-1 flex flex-col items-center gap-2 group cursor-default">
+                    <div className="w-full relative flex items-end justify-center h-28">
+                      {/* Tooltip on hover */}
+                      <span className="absolute bottom-full mb-1 opacity-0 group-hover:opacity-100 bg-zinc-900 border border-white/10 text-[9px] text-white px-1.5 py-0.5 rounded transition-opacity duration-200 pointer-events-none">
+                        {day.minutes}m
+                      </span>
+                      {/* Bar fill */}
+                      <motion.div
+                        className="w-full rounded-t-md bg-gradient-to-t from-violet-600 to-indigo-500"
+                        initial={{ height: 0 }}
+                        animate={{ height: `${heightPercent}%` }}
+                        transition={{ duration: 0.8, delay: idx * 0.05 }}
+                      />
+                    </div>
+                    <span className="text-[10px] text-zinc-500 font-semibold uppercase">{day.day}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Library Navigation & Book cards */}
+        <div className="lg:col-span-8 flex flex-col gap-6">
+          {/* Tab Selection */}
+          <div className="flex items-center gap-3 border-b border-white/5 pb-1">
+            {[
+              { id: "progress", name: "In Progress", icon: BookOpen },
+              { id: "saved", name: "Bookmarks", icon: BookmarkIcon },
+              { id: "completed", name: "Completed", icon: CheckCircle2 }
+            ].map((tab) => {
+              const isActive = activeTab === tab.id;
+              const Icon = tab.icon;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as any)}
+                  className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold tracking-wide border-b-2 cursor-pointer transition-all ${
+                    isActive
+                      ? "border-violet-500 text-white font-bold"
+                      : "border-transparent text-zinc-400 hover:text-zinc-200"
+                  }`}
+                >
+                  <Icon className="w-4 h-4" />
+                  {tab.name}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Cards List Display */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 min-h-[400px]">
+            <AnimatePresence mode="popLayout">
+              {filteredItems.length > 0 ? (
+                filteredItems.map((book) => {
+                  const hasProgress = "progressPercent" in book;
+                  const progressVal = hasProgress ? (book as any).progressPercent : 0;
+                  
+                  return (
+                    <motion.div
+                      key={book.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3 }}
+                      className="glass-card rounded-3xl p-5 border border-white/5 flex flex-col justify-between group"
+                    >
+                      <div>
+                        {/* cover element */}
+                        <div className="w-full aspect-[2/1] rounded-2xl overflow-hidden relative border border-white/10 mb-4 bg-zinc-900 flex items-center justify-center">
+                          {book.coverUrl ? (
+                            <img
+                              src={book.coverUrl}
+                              alt={book.title}
+                              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            />
+                          ) : (
+                            <div className={`w-full h-full bg-gradient-to-tr ${book.gradientFrom || "from-violet-600"} ${book.gradientTo || "to-indigo-800"} flex items-center justify-center p-4 text-center`}>
+                              <h4 className="font-serif font-bold text-lg text-white leading-tight">{book.title}</h4>
+                            </div>
+                          )}
+                        </div>
+
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-violet-400 block mb-1">
+                          {book.category}
+                        </span>
+                        
+                        <h3 className="text-base font-bold text-white truncate group-hover:text-violet-400 transition-colors">
+                          {book.title}
+                        </h3>
+                        
+                        <p className="text-xs text-zinc-500">by {book.author}</p>
+
+                        {/* Progress Bar (In progress tab) */}
+                        {hasProgress && (
+                          <div className="mt-4 space-y-1.5">
+                            <div className="flex justify-between text-[10px] text-zinc-500 font-semibold">
+                              <span>Completed</span>
+                              <span>{Math.round(progressVal)}%</span>
+                            </div>
+                            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-violet-500 rounded-full"
+                                style={{ width: `${progressVal}%` }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+                        <span className="text-xs text-zinc-500">{book.readTime} read</span>
+                        <Link
+                          href={`/reader/${book.id}`}
+                          className="px-4.5 py-2 rounded-xl bg-violet-600 text-white hover:bg-violet-500 text-xs font-semibold shadow-lg shadow-violet-600/15 transition-all"
+                        >
+                          {hasProgress ? "Continue" : "Read Now"}
+                        </Link>
+                      </div>
+                    </motion.div>
+                  );
+                })
+              ) : (
+                <div className="col-span-2 py-16 text-center text-zinc-500 flex flex-col items-center justify-center gap-3">
+                  <BookMarked className="w-10 h-10 text-zinc-700" />
+                  <p className="text-sm">No books found in this category.</p>
+                  <Link
+                    href="/"
+                    className="px-4.5 py-2 rounded-xl border border-white/10 hover:border-violet-500 hover:text-white text-xs font-semibold transition-all mt-2"
+                  >
+                    Browse Library Catalog
+                  </Link>
+                </div>
+              )}
+            </AnimatePresence>
+          </div>
+        </div>
+      </main>
+
+      {/* Edit Profile Modal */}
+      <AnimatePresence>
+        {isEditing && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsEditing(false)} />
+            
+            <motion.div
+              className="w-full max-w-md glass-panel p-8 rounded-3xl border border-white/10 z-10"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+            >
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-bold text-white">Edit Profile Portal</h3>
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="p-1 rounded-full hover:bg-white/5 text-zinc-500"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <form onSubmit={handleProfileSave} className="space-y-4">
+                <div>
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-2">Display Username</label>
+                  <input
+                    type="text"
+                    value={usernameInput}
+                    onChange={(e) => setUsernameInput(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label className="text-xs font-bold text-zinc-500 uppercase tracking-widest block mb-2">Profile Bio</label>
+                  <textarea
+                    rows={4}
+                    value={bioInput}
+                    onChange={(e) => setBioInput(e.target.value)}
+                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 transition-all resize-none font-sans"
+                    placeholder="Tell us about yourself..."
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3.5 rounded-xl bg-violet-600 hover:bg-violet-500 font-semibold text-sm text-white shadow-xl shadow-violet-600/10 transition-all cursor-pointer mt-6"
+                >
+                  Save Changes
+                </button>
+              </form>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
