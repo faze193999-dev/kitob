@@ -60,7 +60,7 @@ export default function AuthPage() {
         className="w-full max-w-md glass-panel rounded-3xl p-8 sm:p-10 border border-white/5 relative z-10 shadow-2xl"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
       >
         {/* Brand Link */}
         <div className="text-center mb-8">
