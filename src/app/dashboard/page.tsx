@@ -68,7 +68,7 @@ export default function DashboardPage() {
 
   if (loading || !user || !analytics) {
     return (
-      <div className="min-h-screen bg-[#050508] flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="w-12 h-12 rounded-full border-4 border-violet-500/20 border-t-violet-500 animate-spin" />
       </div>
     );
@@ -109,18 +109,18 @@ export default function DashboardPage() {
   const maxChartMinutes = Math.max(...analytics.weeklyActivity.map((d: any) => d.minutes), 10);
 
   return (
-    <div className="min-h-screen bg-[#050508] pt-24 pb-12 selection:bg-violet-600/30">
+    <div className="min-h-screen bg-transparent pt-24 pb-12">
       <Navbar />
 
       <main className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 mt-4">
         {/* Left Column: Profile Card & Reading Stats Charts */}
         <div className="lg:col-span-4 flex flex-col gap-6">
           {/* Profile Card */}
-          <div className="glass-panel p-6 rounded-3xl border border-white/5 relative overflow-hidden">
+          <div className="glass-panel p-6 rounded-3xl border border-black/5 relative overflow-hidden">
             <div className="absolute top-4 right-4">
               <button
                 onClick={() => setIsEditing(true)}
-                className="p-2 rounded-xl bg-white/5 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10 transition-colors cursor-pointer"
+                className="p-2 rounded-xl bg-black/5 border border-black/5 text-zinc-500 hover:text-zinc-950 hover:bg-black/8 transition-colors cursor-pointer"
                 title="Profilni tahrirlash"
               >
                 <Edit3 className="w-4 h-4" />
@@ -131,18 +131,18 @@ export default function DashboardPage() {
               <img
                 src={user.avatarUrl}
                 alt={user.username}
-                className="w-20 h-20 rounded-2xl object-cover ring-2 ring-violet-500/30 mb-4"
+                className="w-20 h-20 rounded-2xl object-cover ring-2 ring-violet-500/10 mb-4"
               />
-              <h2 className="text-xl font-bold text-white tracking-tight">{user.username}</h2>
-              <span className="text-xs text-violet-400 font-semibold bg-violet-500/10 px-3 py-1 rounded-full mt-1.5 uppercase tracking-wider">
+              <h2 className="text-xl font-bold text-zinc-800 tracking-tight">{user.username}</h2>
+              <span className="text-xs text-violet-700 font-semibold bg-violet-600/10 px-3 py-1 rounded-full mt-1.5 uppercase tracking-wider">
                 {user.role === 'admin' ? 'Admin' : 'Oddiy'} a'zosi
               </span>
               
-              <p className="text-sm text-zinc-400 mt-4 leading-relaxed font-sans max-w-[280px]">
+              <p className="text-sm text-zinc-600 mt-4 leading-relaxed font-sans max-w-[280px]">
                 {user.bio || "Profil ma'lumotlari hali kiritilmagan."}
               </p>
 
-              <div className="w-full h-px bg-white/10 my-6" />
+              <div className="w-full h-px bg-black/5 my-6" />
 
               <div className="w-full flex items-center justify-between text-xs text-zinc-500 font-medium">
                 <span className="flex items-center gap-1.5">
@@ -156,32 +156,32 @@ export default function DashboardPage() {
 
           {/* Reading Statistics Cards */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="glass-panel p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
+            <div className="glass-panel p-4 rounded-2xl border border-black/5 flex flex-col justify-between">
               <span className="flex items-center gap-1.5 text-xs text-zinc-500 font-semibold uppercase tracking-wider mb-2">
                 <Flame className="w-4 h-4 text-orange-500 fill-orange-500" />
                 Kunlik faollik
               </span>
               <div>
-                <h3 className="text-2xl font-bold text-white leading-none">{analytics.streak}</h3>
+                <h3 className="text-2xl font-bold text-zinc-800 leading-none">{analytics.streak}</h3>
                 <span className="text-[10px] text-zinc-500 mt-1 block">faol kunlar</span>
               </div>
             </div>
 
-            <div className="glass-panel p-4 rounded-2xl border border-white/5 flex flex-col justify-between">
+            <div className="glass-panel p-4 rounded-2xl border border-black/5 flex flex-col justify-between">
               <span className="flex items-center gap-1.5 text-xs text-zinc-500 font-semibold uppercase tracking-wider mb-2">
-                <Clock className="w-4 h-4 text-indigo-400" />
+                <Clock className="w-4 h-4 text-indigo-500" />
                 Mutolaa vaqti
               </span>
               <div>
-                <h3 className="text-2xl font-bold text-white leading-none">{analytics.totalMinutes}</h3>
+                <h3 className="text-2xl font-bold text-zinc-800 leading-none">{analytics.totalMinutes}</h3>
                 <span className="text-[10px] text-zinc-500 mt-1 block">jami daqiqa</span>
               </div>
             </div>
           </div>
 
           {/* Weekly Minutes Custom Bar Graph */}
-          <div className="glass-panel p-5 rounded-3xl border border-white/5">
-            <h3 className="text-sm font-bold text-white tracking-wide mb-4">Haftalik faollik</h3>
+          <div className="glass-panel p-5 rounded-3xl border border-black/5">
+            <h3 className="text-sm font-bold text-zinc-800 tracking-wide mb-4">Haftalik faollik</h3>
             
             {/* SVG custom bar graph */}
             <div className="h-44 w-full flex items-end justify-between gap-2.5 pt-4">
@@ -191,7 +191,7 @@ export default function DashboardPage() {
                   <div key={day.day} className="flex-1 flex flex-col items-center gap-2 group cursor-default">
                     <div className="w-full relative flex items-end justify-center h-28">
                       {/* Tooltip on hover */}
-                      <span className="absolute bottom-full mb-1 opacity-0 group-hover:opacity-100 bg-zinc-900 border border-white/10 text-[9px] text-white px-1.5 py-0.5 rounded transition-opacity duration-200 pointer-events-none">
+                      <span className="absolute bottom-full mb-1 opacity-0 group-hover:opacity-100 bg-white border border-black/5 text-[9px] text-zinc-800 shadow-md px-1.5 py-0.5 rounded transition-opacity duration-200 pointer-events-none">
                         {day.minutes}m
                       </span>
                       {/* Bar fill */}
@@ -213,7 +213,7 @@ export default function DashboardPage() {
         {/* Right Column: Library Navigation & Book cards */}
         <div className="lg:col-span-8 flex flex-col gap-6">
           {/* Tab Selection */}
-          <div className="flex items-center gap-3 border-b border-white/5 pb-1">
+          <div className="flex items-center gap-3 border-b border-black/5 pb-1">
             {[
               { id: "progress", name: "O'qilmoqda", icon: BookOpen },
               { id: "saved", name: "Xatcho'plar", icon: BookmarkIcon },
@@ -227,8 +227,8 @@ export default function DashboardPage() {
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`flex items-center gap-2 pb-3 px-1 text-sm font-semibold tracking-wide border-b-2 cursor-pointer transition-all ${
                     isActive
-                      ? "border-violet-500 text-white font-bold"
-                      : "border-transparent text-zinc-400 hover:text-zinc-200"
+                      ? "border-violet-500 text-zinc-900 font-bold"
+                      : "border-transparent text-zinc-500 hover:text-zinc-800"
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -254,11 +254,11 @@ export default function DashboardPage() {
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
                       transition={{ duration: 0.3 }}
-                      className="glass-card rounded-3xl p-5 border border-white/5 flex flex-col justify-between group"
+                      className="glass-card rounded-3xl p-5 border border-black/5 flex flex-col justify-between group"
                     >
                       <div>
                         {/* cover element */}
-                        <div className="w-full aspect-[2/1] rounded-2xl overflow-hidden relative border border-white/10 mb-4 bg-zinc-900 flex items-center justify-center">
+                        <div className="w-full aspect-[2/1] rounded-2xl overflow-hidden relative border border-black/5 mb-4 bg-zinc-100 flex items-center justify-center">
                           {book.coverUrl ? (
                             <img
                               src={book.coverUrl}
@@ -272,11 +272,11 @@ export default function DashboardPage() {
                           )}
                         </div>
 
-                        <span className="text-[10px] uppercase font-bold tracking-widest text-violet-400 block mb-1">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-violet-600 block mb-1">
                           {book.category}
                         </span>
                         
-                        <h3 className="text-base font-bold text-white truncate group-hover:text-violet-400 transition-colors">
+                        <h3 className="text-base font-bold text-zinc-800 truncate group-hover:text-violet-700 transition-colors">
                           {book.title}
                         </h3>
                         
@@ -289,7 +289,7 @@ export default function DashboardPage() {
                               <span>Tugallandi</span>
                               <span>{Math.round(progressVal)}%</span>
                             </div>
-                            <div className="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                            <div className="h-1.5 w-full bg-black/5 rounded-full overflow-hidden">
                               <div
                                 className="h-full bg-violet-500 rounded-full"
                                 style={{ width: `${progressVal}%` }}
@@ -299,11 +299,11 @@ export default function DashboardPage() {
                         )}
                       </div>
 
-                      <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+                      <div className="mt-6 pt-4 border-t border-black/5 flex items-center justify-between">
                         <span className="text-xs text-zinc-500">{book.readTime} mutolaa vaqti</span>
                         <Link
                           href={`/reader/${book.id}`}
-                          className="px-4.5 py-2 rounded-xl bg-violet-600 text-white hover:bg-violet-500 text-xs font-semibold shadow-lg shadow-violet-600/15 transition-all"
+                          className="px-4.5 py-2 rounded-xl bg-violet-600 text-white hover:bg-violet-500 text-xs font-semibold shadow-lg shadow-violet-600/10 transition-all"
                         >
                           {hasProgress ? "Davom etish" : "O'qish"}
                         </Link>
@@ -313,11 +313,11 @@ export default function DashboardPage() {
                 })
               ) : (
                 <div className="col-span-2 py-16 text-center text-zinc-500 flex flex-col items-center justify-center gap-3">
-                  <BookMarked className="w-10 h-10 text-zinc-700" />
+                  <BookMarked className="w-10 h-10 text-zinc-400" />
                   <p className="text-sm">Ushbu ruknda kitob topilmadi.</p>
                   <Link
                     href="/"
-                    className="px-4.5 py-2 rounded-xl border border-white/10 hover:border-violet-500 hover:text-white text-xs font-semibold transition-all mt-2"
+                    className="px-4.5 py-2 rounded-xl border border-black/10 hover:border-violet-500 hover:text-violet-700 text-xs font-semibold transition-all mt-2"
                   >
                     Katalogga o'tish
                   </Link>
@@ -332,19 +332,19 @@ export default function DashboardPage() {
       <AnimatePresence>
         {isEditing && (
           <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsEditing(false)} />
+            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsEditing(false)} />
             
             <motion.div
-              className="w-full max-w-md glass-panel p-8 rounded-3xl border border-white/10 z-10"
+              className="w-full max-w-md glass-panel p-8 rounded-3xl border border-black/5 z-10"
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
             >
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-bold text-white">Profilni tahrirlash</h3>
+                <h3 className="text-lg font-bold text-zinc-800">Profilni tahrirlash</h3>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="p-1 rounded-full hover:bg-white/5 text-zinc-500"
+                  className="p-1 rounded-full hover:bg-black/5 text-zinc-500"
                 >
                   <X className="w-5 h-5" />
                 </button>
@@ -357,7 +357,7 @@ export default function DashboardPage() {
                     type="text"
                     value={usernameInput}
                     onChange={(e) => setUsernameInput(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 transition-all"
+                    className="w-full px-4 py-3 rounded-xl bg-black/5 border border-black/5 text-zinc-800 placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 transition-all focus:bg-white/80"
                   />
                 </div>
 
@@ -367,7 +367,7 @@ export default function DashboardPage() {
                     rows={4}
                     value={bioInput}
                     onChange={(e) => setBioInput(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 transition-all resize-none font-sans"
+                    className="w-full px-4 py-3 rounded-xl bg-black/5 border border-black/5 text-zinc-800 placeholder-zinc-500 text-sm focus:outline-none focus:border-violet-500 transition-all resize-none font-sans focus:bg-white/80"
                     placeholder="O'zingiz haqingizda yozing..."
                   />
                 </div>

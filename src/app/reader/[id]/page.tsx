@@ -46,7 +46,7 @@ export default function ReaderPage({ params }: PageProps) {
   // Reading Options (bound to AuthContext preferences / local state)
   const [fontSize, setFontSize] = useState(18);
   const [fontFamily, setFontFamily] = useState<"sans" | "serif" | "mono">("sans");
-  const [theme, setTheme] = useState<"dark" | "light" | "sepia" | "glass">("dark");
+  const [theme, setTheme] = useState<"dark" | "light" | "sepia" | "glass">("light");
 
   // Selection & Annotation states
   const [selectedText, setSelectedText] = useState("");
@@ -65,7 +65,7 @@ export default function ReaderPage({ params }: PageProps) {
     if (user?.preferences) {
       setFontSize(user.preferences.fontSize || 18);
       setFontFamily(user.preferences.fontFamily || "sans");
-      setTheme(user.preferences.theme || "dark");
+      setTheme(user.preferences.theme || "light");
     }
   }, [user]);
 
@@ -99,9 +99,10 @@ export default function ReaderPage({ params }: PageProps) {
   // Handle Theme class mapping on mount/change
   useEffect(() => {
     const body = document.body;
-    body.classList.remove("light-theme", "sepia-theme");
+    body.classList.remove("light-theme", "sepia-theme", "dark-theme");
     if (theme === "light") body.classList.add("light-theme");
     if (theme === "sepia") body.classList.add("sepia-theme");
+    if (theme === "dark") body.classList.add("dark-theme");
   }, [theme]);
 
   // Scroll Progress Calculator

@@ -39,22 +39,23 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
 
   const toggleTheme = () => {
     if (!user) return;
-    const currentTheme = user.preferences?.theme || "dark";
-    const nextTheme = currentTheme === "dark" ? "light" : currentTheme === "light" ? "sepia" : "dark";
+    const currentTheme = user.preferences?.theme || "light";
+    const nextTheme = currentTheme === "light" ? "dark" : currentTheme === "dark" ? "sepia" : "light";
     updateUserPreferences({ theme: nextTheme });
     
     // Apply class to body for reader styling
     const body = document.body;
-    body.classList.remove("light-theme", "sepia-theme");
+    body.classList.remove("light-theme", "sepia-theme", "dark-theme");
     if (nextTheme === "light") body.classList.add("light-theme");
     if (nextTheme === "sepia") body.classList.add("sepia-theme");
+    if (nextTheme === "dark") body.classList.add("dark-theme");
   };
 
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled 
-          ? "py-3 bg-black/60 backdrop-blur-xl border-b border-white/10" 
+          ? "py-3 bg-white/45 backdrop-blur-xl border-b border-black/5" 
           : "py-5 bg-transparent border-b border-transparent"
       }`}
       initial={{ y: -100, opacity: 0 }}
@@ -64,11 +65,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20 group-hover:scale-105 transition-transform duration-300">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/10 group-hover:scale-105 transition-transform duration-300">
             <BookOpen className="w-5 h-5 text-white" />
           </div>
-          <span className="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
-            Book<span className="text-violet-500">Verse</span>
+          <span className="text-xl font-bold tracking-tight text-zinc-800">
+            Book<span className="text-violet-600">Verse</span>
           </span>
         </Link>
 
@@ -81,7 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                 key={link.name}
                 href={link.href}
                 className={`relative text-sm font-medium tracking-wide transition-colors duration-300 ${
-                  isActive ? "text-white" : "text-zinc-400 hover:text-zinc-200"
+                  isActive ? "text-zinc-900 font-semibold" : "text-zinc-500 hover:text-zinc-950"
                 }`}
               >
                 {link.name}
@@ -104,7 +105,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
           {onSearchClick && (
             <button
               onClick={onSearchClick}
-              className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all duration-300 cursor-pointer"
+              className="p-2.5 rounded-xl bg-black/5 border border-transparent text-zinc-500 hover:text-zinc-950 hover:bg-black/8 transition-all duration-300 cursor-pointer"
               title="Kitoblarni qidirish"
             >
               <Search className="w-4 h-4" />
@@ -115,7 +116,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
           {user && (
             <button
               onClick={toggleTheme}
-              className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all duration-300 cursor-pointer text-xs font-semibold"
+              className="p-2.5 rounded-xl bg-black/5 border border-transparent text-zinc-500 hover:text-zinc-950 hover:bg-black/8 transition-all duration-300 cursor-pointer text-xs font-semibold"
               title="Mutolaa sozlamalari"
             >
               <Sliders className="w-4 h-4" />
@@ -126,7 +127,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
           {user?.role === "admin" && (
             <Link
               href="/admin"
-              className="px-4.5 py-2.5 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400 hover:bg-violet-600/20 hover:text-violet-300 text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5"
+              className="px-4.5 py-2.5 rounded-xl bg-violet-600/10 border border-violet-500/20 text-violet-700 hover:bg-violet-600/20 hover:text-violet-800 text-xs font-semibold tracking-wide transition-all flex items-center gap-1.5"
             >
               <LayoutDashboard className="w-3.5 h-3.5" />
               Admin paneli
@@ -138,14 +139,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
             <div className="relative">
               <button
                 onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-                className="flex items-center gap-2.5 p-1.5 pr-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 hover:border-white/10 transition-all duration-300 cursor-pointer"
+                className="flex items-center gap-2.5 p-1.5 pr-3 rounded-xl bg-black/5 border border-transparent hover:bg-black/8 transition-all duration-300 cursor-pointer"
               >
                 <img
                   src={user.avatarUrl}
                   alt={user.username}
-                  className="w-7 h-7 rounded-lg object-cover ring-1 ring-white/20"
+                  className="w-7 h-7 rounded-lg object-cover ring-1 ring-black/10"
                 />
-                <span className="text-sm font-medium text-zinc-200">{user.username.split(" ")[0]}</span>
+                <span className="text-sm font-medium text-zinc-800">{user.username.split(" ")[0]}</span>
               </button>
 
               <AnimatePresence>
@@ -164,27 +165,27 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
                     >
-                      <div className="px-3 py-2.5 border-b border-white/10 mb-1">
-                        <p className="text-xs text-zinc-400 font-medium">Tizimga kirilgan</p>
-                        <p className="text-sm font-semibold text-white truncate">{user.email}</p>
+                      <div className="px-3 py-2.5 border-b border-black/5 mb-1">
+                        <p className="text-xs text-zinc-500 font-medium">Tizimga kirilgan</p>
+                        <p className="text-sm font-semibold text-zinc-800 truncate">{user.email}</p>
                       </div>
 
                       <Link
                         href="/dashboard"
-                        className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors duration-200"
+                        className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-zinc-600 hover:text-zinc-950 hover:bg-black/5 transition-colors duration-200"
                         onClick={() => setProfileDropdownOpen(false)}
                       >
-                        <User className="w-4 h-4 text-zinc-400" />
+                        <User className="w-4 h-4 text-zinc-500" />
                         Mening kutubxonam
                       </Link>
 
                       {user.role === "admin" && (
                         <Link
                           href="/admin"
-                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-zinc-300 hover:text-white hover:bg-white/5 transition-colors duration-200"
+                          className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-zinc-600 hover:text-zinc-950 hover:bg-black/5 transition-colors duration-200"
                           onClick={() => setProfileDropdownOpen(false)}
                         >
-                          <LayoutDashboard className="w-4 h-4 text-zinc-400" />
+                          <LayoutDashboard className="w-4 h-4 text-zinc-500" />
                           Admin boshqaruvi
                         </Link>
                       )}
@@ -207,7 +208,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
           ) : (
             <Link
               href="/auth"
-              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-sm font-semibold text-white hover:shadow-lg hover:shadow-violet-600/25 active:scale-98 transition-all duration-300"
+              className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-sm font-semibold text-white hover:shadow-lg hover:shadow-violet-600/10 active:scale-98 transition-all duration-300"
             >
               Kirish
             </Link>
@@ -219,7 +220,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
           {onSearchClick && (
             <button
               onClick={onSearchClick}
-              className="p-2 rounded-xl bg-white/5 text-zinc-400"
+              className="p-2 rounded-xl bg-black/5 text-zinc-500"
             >
               <Search className="w-4 h-4" />
             </button>
@@ -227,7 +228,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
 
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="p-2 rounded-xl bg-white/5 text-zinc-300 hover:text-white"
+            className="p-2 rounded-xl bg-black/5 text-zinc-650 hover:text-zinc-950"
           >
             {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -238,7 +239,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
       <AnimatePresence>
         {menuOpen && (
           <motion.div
-            className="fixed inset-x-0 top-[70px] bottom-0 bg-black/95 backdrop-blur-2xl z-40 px-6 py-8 flex flex-col gap-6 md:hidden border-t border-white/5"
+            className="fixed inset-x-0 top-[70px] bottom-0 bg-white/95 backdrop-blur-2xl z-40 px-6 py-8 flex flex-col gap-6 md:hidden border-t border-black/5"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
@@ -249,7 +250,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className="text-lg font-medium text-zinc-300 hover:text-white transition-colors duration-200"
+                  className="text-lg font-medium text-zinc-600 hover:text-zinc-950 transition-colors duration-200"
                   onClick={() => setMenuOpen(false)}
                 >
                   {link.name}
@@ -259,7 +260,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
               {user?.role === "admin" && (
                 <Link
                   href="/admin"
-                  className="text-lg font-medium text-violet-400 hover:text-violet-300 transition-colors duration-200"
+                  className="text-lg font-medium text-violet-700 hover:text-violet-800 transition-colors duration-200"
                   onClick={() => setMenuOpen(false)}
                 >
                   Admin paneli
@@ -267,7 +268,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
               )}
             </div>
 
-            <div className="h-px bg-white/10 my-2" />
+            <div className="h-px bg-black/5 my-2" />
 
             {user ? (
               <div className="flex flex-col gap-4">
@@ -275,10 +276,10 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                   <img
                     src={user.avatarUrl}
                     alt={user.username}
-                    className="w-10 h-10 rounded-xl object-cover ring-1 ring-white/10"
+                    className="w-10 h-10 rounded-xl object-cover ring-1 ring-black/10"
                   />
                   <div>
-                    <h4 className="text-sm font-semibold text-white">{user.username}</h4>
+                    <h4 className="text-sm font-semibold text-zinc-800">{user.username}</h4>
                     <p className="text-xs text-zinc-500">{user.email}</p>
                   </div>
                 </div>
@@ -287,7 +288,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
                     logout();
                     setMenuOpen(false);
                   }}
-                  className="w-full py-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-center font-medium text-rose-400 hover:bg-rose-500/20 transition-all duration-200"
+                  className="w-full py-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-center font-medium text-rose-600 hover:bg-rose-500/20 transition-all duration-200"
                 >
                   Chiqish
                 </button>
@@ -295,7 +296,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
             ) : (
               <Link
                 href="/auth"
-                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-center font-semibold text-white shadow-lg shadow-violet-500/20"
+                className="w-full py-3.5 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 text-center font-semibold text-white shadow-lg shadow-violet-500/10"
                 onClick={() => setMenuOpen(false)}
               >
                 Kirish

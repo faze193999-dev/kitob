@@ -33,11 +33,11 @@ const AUTHORS_DATA = [
 
 export const Authors: React.FC = () => {
   return (
-    <div className="py-16 border-t border-white/5">
+    <div className="py-16 border-t border-black/5">
       <div className="max-w-7xl mx-auto px-6">
         {/* Title */}
         <div className="mb-12 text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold font-sans text-white tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-bold font-sans text-zinc-800 tracking-tight">
             Mashhur mualliflar
           </h2>
           <p className="text-zinc-500 text-sm mt-1">Kitoblar va maqolalar ortidagi ijodkorlar bilan tanishing</p>
@@ -48,7 +48,7 @@ export const Authors: React.FC = () => {
           {AUTHORS_DATA.map((author, idx) => (
             <motion.div
               key={author.name}
-              className="group relative rounded-3xl p-6 glass-card border border-white/5 overflow-hidden flex flex-col justify-between"
+              className="group relative rounded-3xl p-6 glass-card border border-black/5 overflow-hidden flex flex-col justify-between"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -60,7 +60,7 @@ export const Authors: React.FC = () => {
               <div>
                 {/* Author Card Head */}
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 rounded-2xl overflow-hidden border border-white/10 flex-shrink-0 relative">
+                  <div className="w-16 h-16 rounded-2xl overflow-hidden border border-black/5 flex-shrink-0 relative">
                     <img
                       src={author.avatar}
                       alt={author.name}
@@ -68,46 +68,46 @@ export const Authors: React.FC = () => {
                     />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white group-hover:text-violet-400 transition-colors duration-200">
+                    <h3 className="text-lg font-bold text-zinc-800 group-hover:text-violet-700 transition-colors duration-200">
                       {author.name}
                     </h3>
-                    <p className="text-xs text-zinc-400 mt-0.5">{author.role}</p>
+                    <p className="text-xs text-zinc-500 mt-0.5">{author.role}</p>
                   </div>
                 </div>
 
-                <p className="text-sm text-zinc-400 leading-relaxed mb-6 font-sans">
+                <p className="text-sm text-zinc-600 leading-relaxed mb-6 font-sans">
                   &quot;{author.bio}&quot;
                 </p>
 
                 {/* Award Badge */}
-                <div className="flex items-center gap-2 p-3 rounded-xl bg-white/5 border border-white/5 text-zinc-300 text-xs mb-6">
-                  <Award className="w-4 h-4 text-violet-400" />
+                <div className="flex items-center gap-2 p-3 rounded-xl bg-black/5 border border-black/5 text-zinc-700 text-xs mb-6">
+                  <Award className="w-4 h-4 text-violet-600" />
                   <span className="truncate">{author.award}</span>
                 </div>
               </div>
 
               {/* Stats Footer */}
-              <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/5 text-center">
+              <div className="grid grid-cols-3 gap-2 pt-4 border-t border-black/5 text-center">
                 <div>
                   <span className="flex items-center justify-center gap-1 text-xs text-zinc-500 mb-1">
                     <BookOpen className="w-3.5 h-3.5" />
                     Kitoblar
                   </span>
-                  <span className="text-sm font-bold text-white">{author.stats.books}</span>
+                  <span className="text-sm font-bold text-zinc-800">{author.stats.books}</span>
                 </div>
                 <div>
                   <span className="flex items-center justify-center gap-1 text-xs text-zinc-500 mb-1">
                     <Users className="w-3.5 h-3.5" />
                     O'quvchilar
                   </span>
-                  <span className="text-sm font-bold text-white">{author.stats.readers}</span>
+                  <span className="text-sm font-bold text-zinc-800">{author.stats.readers}</span>
                 </div>
                 <div>
                   <span className="flex items-center justify-center gap-1 text-xs text-zinc-500 mb-1">
                     <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
                     Reyting
                   </span>
-                  <span className="text-sm font-bold text-white">{author.stats.rating}</span>
+                  <span className="text-sm font-bold text-zinc-800">{author.stats.rating}</span>
                 </div>
               </div>
             </motion.div>

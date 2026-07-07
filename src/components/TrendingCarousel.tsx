@@ -31,7 +31,7 @@ export const TrendingCarousel: React.FC<TrendingCarouselProps> = ({ books }) => 
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold font-sans text-white tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-bold font-sans text-zinc-800 tracking-tight">
               Trenddagi asarlar
             </h2>
             <p className="text-zinc-500 text-sm mt-1">Ushbu haftada eng ko'p o'qilgan kitoblar</p>
@@ -40,13 +40,13 @@ export const TrendingCarousel: React.FC<TrendingCarouselProps> = ({ books }) => 
           <div className="flex items-center gap-3">
             <button
               onClick={() => scroll("left")}
-              className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all duration-300 cursor-pointer"
+              className="p-2.5 rounded-xl bg-black/5 border border-transparent text-zinc-500 hover:text-zinc-950 hover:bg-black/8 transition-all duration-300 cursor-pointer"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
             <button
               onClick={() => scroll("right")}
-              className="p-2.5 rounded-xl bg-white/5 border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all duration-300 cursor-pointer"
+              className="p-2.5 rounded-xl bg-black/5 border border-transparent text-zinc-500 hover:text-zinc-950 hover:bg-black/8 transition-all duration-300 cursor-pointer"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -68,12 +68,12 @@ export const TrendingCarousel: React.FC<TrendingCarouselProps> = ({ books }) => 
               transition={{ duration: 0.6, delay: idx * 0.1, ease: "easeOut" }}
             >
               <Link href={`/reader/${book.id}`} className="block group">
-                <div className="relative glass-card rounded-3xl p-4 flex flex-col h-full cursor-pointer overflow-hidden border border-white/5">
+                <div className="relative glass-card rounded-3xl p-4 flex flex-col h-full cursor-pointer overflow-hidden border border-black/5">
                   {/* Glowing hover card effect */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-violet-600/0 to-violet-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   
                   {/* Book Cover */}
-                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden relative border border-white/10 shadow-lg mb-4">
+                  <div className="w-full aspect-[3/4] rounded-2xl overflow-hidden relative border border-black/5 shadow-md mb-4">
                     {book.coverUrl ? (
                       <img
                         src={book.coverUrl}
@@ -88,7 +88,7 @@ export const TrendingCarousel: React.FC<TrendingCarouselProps> = ({ books }) => 
                     
                     {/* Read Now Overlay */}
                     <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-all duration-300 backdrop-blur-[2px]">
-                      <span className="px-5 py-2.5 rounded-xl bg-violet-600 text-xs font-semibold text-white shadow-lg shadow-violet-500/30 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
+                      <span className="px-5 py-2.5 rounded-xl bg-violet-600 text-xs font-semibold text-white shadow-lg shadow-violet-500/10 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
                         O'qish
                       </span>
                     </div>
@@ -96,26 +96,26 @@ export const TrendingCarousel: React.FC<TrendingCarouselProps> = ({ books }) => 
 
                   {/* Metadata */}
                   <div className="flex items-center justify-between gap-2 text-xs text-zinc-500 mb-2">
-                    <span className="px-2.5 py-0.5 rounded-md bg-white/5 border border-white/5 text-zinc-400 font-semibold uppercase tracking-wider text-[10px]">
+                    <span className="px-2.5 py-0.5 rounded-md bg-black/5 border border-black/5 text-zinc-500 font-semibold uppercase tracking-wider text-[10px]">
                       {book.category}
                     </span>
                     <span className="flex items-center gap-1">
                       <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-                      <span className="text-zinc-300 font-medium">{book.rating}</span>
+                      <span className="text-zinc-650 font-medium">{book.rating}</span>
                     </span>
                   </div>
 
-                  <h3 className="text-base font-semibold text-white truncate group-hover:text-violet-400 transition-colors duration-200">
+                  <h3 className="text-base font-semibold text-zinc-800 truncate group-hover:text-violet-700 transition-colors duration-200">
                     {book.title}
                   </h3>
                   
-                  <p className="text-xs text-zinc-400 mt-1">muallif: {book.author}</p>
+                  <p className="text-xs text-zinc-500 mt-1">muallif: {book.author}</p>
                   
                   <p className="text-xs text-zinc-500 line-clamp-2 mt-3 leading-relaxed">
                     {book.description}
                   </p>
 
-                  <div className="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-xs text-zinc-500">
+                  <div className="mt-4 pt-3 border-t border-black/5 flex items-center justify-between text-xs text-zinc-500">
                     <span>{book.readTime} o'qish</span>
                     <span className="flex items-center gap-1 text-[11px]">
                       <Eye className="w-3.5 h-3.5 text-zinc-600" />

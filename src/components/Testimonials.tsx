@@ -36,10 +36,10 @@ export const Testimonials: React.FC = () => {
   }, []);
 
   return (
-    <div className="py-16 border-t border-white/5 relative overflow-hidden">
+    <div className="py-16 border-t border-black/5 relative overflow-hidden">
       <div className="max-w-4xl mx-auto px-6 relative z-10 text-center">
         {/* Quote Icon */}
-        <div className="inline-flex p-4 rounded-3xl bg-violet-600/10 border border-violet-500/20 text-violet-400 mb-8">
+        <div className="inline-flex p-4 rounded-3xl bg-violet-600/5 border border-violet-500/10 text-violet-600 mb-8">
           <Quote className="w-8 h-8 rotate-180" />
         </div>
 
@@ -54,7 +54,7 @@ export const Testimonials: React.FC = () => {
               transition={{ duration: 0.5, ease: "easeOut" }}
               className="flex flex-col items-center"
             >
-              <p className="text-xl sm:text-2xl font-serif text-zinc-200 leading-relaxed max-w-3xl italic">
+              <p className="text-xl sm:text-2xl font-serif text-zinc-700 leading-relaxed max-w-3xl italic">
                 &quot;{TESTIMONIALS_DATA[activeIdx].quote}&quot;
               </p>
               
@@ -62,10 +62,10 @@ export const Testimonials: React.FC = () => {
                 <img
                   src={TESTIMONIALS_DATA[activeIdx].avatar}
                   alt={TESTIMONIALS_DATA[activeIdx].author}
-                  className="w-10 h-10 rounded-full object-cover border border-white/20"
+                  className="w-10 h-10 rounded-full object-cover border border-black/10"
                 />
                 <div className="text-left">
-                  <h4 className="text-sm font-bold text-white">{TESTIMONIALS_DATA[activeIdx].author}</h4>
+                  <h4 className="text-sm font-bold text-zinc-800">{TESTIMONIALS_DATA[activeIdx].author}</h4>
                   <p className="text-xs text-zinc-500">{TESTIMONIALS_DATA[activeIdx].role}</p>
                 </div>
               </div>
@@ -80,7 +80,7 @@ export const Testimonials: React.FC = () => {
               key={idx}
               onClick={() => setActiveIdx(idx)}
               className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
-                activeIdx === idx ? "w-8 bg-violet-500" : "w-2 bg-white/10 hover:bg-white/30"
+                activeIdx === idx ? "w-8 bg-violet-500" : "w-2 bg-black/10 hover:bg-black/30"
               }`}
             />
           ))}

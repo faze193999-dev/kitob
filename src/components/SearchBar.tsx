@@ -61,7 +61,7 @@ export const SearchBar: React.FC = () => {
             setIsOpen(true);
           }}
           onFocus={() => setIsOpen(true)}
-          className="w-full pl-12 pr-12 py-4 rounded-2xl bg-white/5 border border-white/10 text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-white/8 transition-all duration-300 shadow-xl"
+          className="w-full pl-12 pr-12 py-4 rounded-2xl bg-black/5 border border-black/5 text-zinc-800 placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-white/80 transition-all duration-300 shadow-lg"
         />
         {query && (
           <button
@@ -69,7 +69,7 @@ export const SearchBar: React.FC = () => {
               setQuery("");
               setResults([]);
             }}
-            className="absolute right-4 p-1 rounded-full hover:bg-white/10 text-zinc-400 hover:text-white transition-colors duration-200"
+            className="absolute right-4 p-1 rounded-full hover:bg-black/5 text-zinc-500 hover:text-zinc-850 transition-colors duration-200"
           >
             <X className="w-4 h-4" />
           </button>
@@ -95,10 +95,10 @@ export const SearchBar: React.FC = () => {
                   <button
                     key={book.id}
                     onClick={() => handleSelectBook(book.id)}
-                    className="w-full flex items-center gap-4 p-2 rounded-xl hover:bg-white/5 text-left transition-all duration-200 group cursor-pointer"
+                    className="w-full flex items-center gap-4 p-2 rounded-xl hover:bg-black/5 text-left transition-all duration-200 group cursor-pointer"
                   >
                     {/* Cover Preview */}
-                    <div className="w-10 h-14 rounded-lg overflow-hidden flex-shrink-0 border border-white/10 relative">
+                    <div className="w-10 h-14 rounded-lg overflow-hidden flex-shrink-0 border border-black/5 relative">
                       {book.coverUrl ? (
                         <img
                           src={book.coverUrl}
@@ -112,16 +112,16 @@ export const SearchBar: React.FC = () => {
 
                     {/* Book Metadata */}
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-semibold text-white truncate group-hover:text-violet-400 transition-colors duration-200">
+                      <h4 className="text-sm font-semibold text-zinc-800 truncate group-hover:text-violet-700 transition-colors duration-200">
                         {book.title}
                       </h4>
-                      <p className="text-xs text-zinc-400 truncate mt-0.5">{book.author}</p>
-                      <span className="inline-block px-2 py-0.5 text-[10px] font-semibold bg-white/5 border border-white/5 text-zinc-400 rounded-md mt-1">
+                      <p className="text-xs text-zinc-500 truncate mt-0.5">{book.author}</p>
+                      <span className="inline-block px-2 py-0.5 text-[10px] font-semibold bg-black/5 border border-black/5 text-zinc-500 rounded-md mt-1">
                         {book.category}
                       </span>
                     </div>
 
-                    <ArrowRight className="w-4 h-4 text-zinc-600 group-hover:text-violet-400 group-hover:translate-x-1 transition-all duration-200" />
+                    <ArrowRight className="w-4 h-4 text-zinc-600 group-hover:text-violet-700 group-hover:translate-x-1 transition-all duration-200" />
                   </button>
                 ))}
               </div>

@@ -39,15 +39,15 @@ const StatItem: React.FC<StatItemProps> = ({ label, target, suffix = "", icon: I
   }, [isInView, target]);
 
   return (
-    <div ref={ref} className="p-6 rounded-3xl glass-card border border-white/5 flex flex-col items-center text-center relative group">
+    <div ref={ref} className="p-6 rounded-3xl glass-card border border-black/5 flex flex-col items-center text-center relative group">
       {/* Glow highlight */}
       <div className={`absolute inset-0 bg-gradient-to-tr ${color} opacity-0 group-hover:opacity-[0.03] transition-opacity duration-500 rounded-3xl`} />
       
-      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-violet-400 mb-4 group-hover:scale-105 group-hover:text-violet-300 transition-all duration-300">
+      <div className="w-12 h-12 rounded-2xl bg-black/5 border border-black/5 flex items-center justify-center text-violet-600 mb-4 group-hover:scale-105 group-hover:text-violet-700 transition-all duration-300">
         <Icon className="w-6 h-6" />
       </div>
 
-      <span className="text-3xl sm:text-4xl font-bold text-white tracking-tight font-sans">
+      <span className="text-3xl sm:text-4xl font-bold text-zinc-800 tracking-tight font-sans">
         {count.toLocaleString()}{suffix}
       </span>
       
@@ -60,7 +60,7 @@ const StatItem: React.FC<StatItemProps> = ({ label, target, suffix = "", icon: I
 
 export const StatsCounter: React.FC = () => {
   return (
-    <div className="py-16 border-t border-white/5 bg-black/20">
+    <div className="py-16 border-t border-black/5 bg-zinc-500/5">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           <StatItem

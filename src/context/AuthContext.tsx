@@ -39,7 +39,7 @@ const DEMO_USER: User = {
   bio: "Voracious reader, software designer, and tech enthusiast. Lover of science fiction and classical literature.",
   preferences: {
     fontSize: 18,
-    theme: "dark",
+    theme: "light",
     fontFamily: "sans"
   }
 };
@@ -54,7 +54,7 @@ const ADMIN_USER: User = {
   bio: "Lead Editor and System Administrator at BookVerse.",
   preferences: {
     fontSize: 16,
-    theme: "dark",
+    theme: "light",
     fontFamily: "mono"
   }
 };
@@ -131,7 +131,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const updatedUser = {
       ...user,
       preferences: {
-        ...user.preferences || { fontSize: 18, theme: "dark" as const, fontFamily: "sans" as const },
+        ...user.preferences || { fontSize: 18, theme: "light" as const, fontFamily: "sans" as const },
         ...prefs
       }
     };
