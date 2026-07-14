@@ -18,7 +18,12 @@ import {
   X,
   Type,
   AlignLeft,
-  BookOpen
+  BookOpen,
+  Search,
+  Pause,
+  Play,
+  Clock,
+  Volume2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
@@ -47,6 +52,16 @@ export default function ReaderPage({ params }: PageProps) {
   const [fontSize, setFontSize] = useState(18);
   const [fontFamily, setFontFamily] = useState<"sans" | "serif" | "mono">("sans");
   const [theme, setTheme] = useState<"dark" | "light" | "sepia" | "glass">("light");
+  const [lineHeight, setLineHeight] = useState<"normal" | "relaxed" | "loose">("relaxed");
+  const [alignment, setAlignment] = useState<"left" | "justify" | "center">("justify");
+  const [brightness, setBrightness] = useState(100);
+
+  // Advanced reader tools
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showSearch, setShowSearch] = useState(false);
+  const [readingSeconds, setReadingSeconds] = useState(0);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [isPausedSpeech, setIsPausedSpeech] = useState(false);
 
   // Selection & Annotation states
   const [selectedText, setSelectedText] = useState("");
@@ -104,6 +119,72 @@ export default function ReaderPage({ params }: PageProps) {
     if (theme === "sepia") body.classList.add("sepia-theme");
     if (theme === "dark") body.classList.add("dark-theme");
   }, [theme]);
+
+  // Session reading timer effect
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setReadingSeconds((prev) => prev + 1);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Speech synthesis cleanup
+  useEffect(() => {
+    return () => {
+      if (typeof window !== "undefined") {
+        window.speechSynthesis?.cancel();
+      }
+    };
+  }, []);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  };
+
+  const startSpeaking = () => {
+    if (!book || typeof window === "undefined") return;
+    window.speechSynthesis?.cancel();
+
+    const textToSpeak = book.chapters[currentChapterIdx].content;
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    utterance.lang = "uz-UZ"; // Set Uzbek voice lang if supported, or default
+    
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      setIsPausedSpeech(false);
+    };
+
+    utterance.onerror = () => {
+      setIsSpeaking(false);
+      setIsPausedSpeech(false);
+    };
+
+    window.speechSynthesis.speak(utterance);
+    setIsSpeaking(true);
+    setIsPausedSpeech(false);
+  };
+
+  const pauseSpeaking = () => {
+    if (typeof window === "undefined") return;
+    if (window.speechSynthesis.speaking) {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+        setIsPausedSpeech(false);
+      } else {
+        window.speechSynthesis.pause();
+        setIsPausedSpeech(true);
+      }
+    }
+  };
+
+  const stopSpeaking = () => {
+    if (typeof window === "undefined") return;
+    window.speechSynthesis?.cancel();
+    setIsSpeaking(false);
+    setIsPausedSpeech(false);
+  };
 
   // Scroll Progress Calculator
   const handleScroll = () => {
@@ -242,28 +323,35 @@ export default function ReaderPage({ params }: PageProps) {
 
   // Highlighting parser implementation
   const renderHighlightedContent = (rawText: string) => {
-    if (highlights.length === 0) return rawText;
-
     let html = rawText;
-    // Map current chapter highlights
-    const chapterHighlights = highlights.filter(
-      (h) => h.chapterId === book?.chapters[currentChapterIdx].id
-    );
 
-    // Sort descending to prevent sub-string collision replacement
-    chapterHighlights
-      .sort((a, b) => b.text.length - a.text.length)
-      .forEach((h) => {
-        const escaped = h.text.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
-        const regex = new RegExp(`(${escaped})`, "gi");
+    // 1. Apply search query highlighting first if present
+    if (searchQuery.trim()) {
+      const escapedQuery = searchQuery.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+      const regex = new RegExp(`(${escapedQuery})(?![^<>]*>)`, "gi");
+      html = html.replace(regex, `<mark class="bg-amber-400 text-black px-0.5 rounded font-bold">$1</mark>`);
+    }
 
-        let highlightClass = "bg-yellow-500/20 text-inherit border-b-2 border-yellow-500/60";
-        if (h.color === "green") highlightClass = "bg-emerald-500/20 text-inherit border-b-2 border-emerald-500/60";
-        if (h.color === "blue") highlightClass = "bg-cyan-500/20 text-inherit border-b-2 border-cyan-500/60";
-        if (h.color === "pink") highlightClass = "bg-pink-500/20 text-inherit border-b-2 border-pink-500/60";
+    // 2. Apply user highlights
+    if (highlights.length > 0) {
+      const chapterHighlights = highlights.filter(
+        (h) => h.chapterId === book?.chapters[currentChapterIdx].id
+      );
 
-        html = html.replace(regex, `<span class="${highlightClass}">${h.text}</span>`);
-      });
+      chapterHighlights
+        .sort((a, b) => b.text.length - a.text.length)
+        .forEach((h) => {
+          const escaped = h.text.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+          const regex = new RegExp(`(${escaped})(?![^<>]*>)`, "gi");
+
+          let highlightClass = "bg-yellow-500/20 text-inherit border-b-2 border-yellow-500/60";
+          if (h.color === "green") highlightClass = "bg-emerald-500/20 text-inherit border-b-2 border-emerald-500/60";
+          if (h.color === "blue") highlightClass = "bg-cyan-500/20 text-inherit border-b-2 border-cyan-500/60";
+          if (h.color === "pink") highlightClass = "bg-pink-500/20 text-inherit border-b-2 border-pink-500/60";
+
+          html = html.replace(regex, `<span class="${highlightClass}">${h.text}</span>`);
+        });
+    }
 
     return <span dangerouslySetInnerHTML={{ __html: html }} />;
   };
@@ -318,8 +406,14 @@ export default function ReaderPage({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Action Controls */}
-        <div className="flex items-center gap-2">
+        {/* Session Timer & Action Controls */}
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-1.5 text-xs text-zinc-500 font-semibold bg-black/5 px-3 py-1.5 rounded-xl border border-black/5">
+            <Clock className="w-3.5 h-3.5 text-violet-500 animate-pulse" />
+            <span>{formatTime(readingSeconds)}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
           {/* Chapter Drawer Toggle */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -376,8 +470,55 @@ export default function ReaderPage({ params }: PageProps) {
           >
             {isFullscreen ? <Minimize2 className="w-5 h-5" /> : <Maximize2 className="w-5 h-5" />}
           </button>
+
+          {/* Search text button */}
+          <button
+            onClick={() => setShowSearch(!showSearch)}
+            className={`p-2 rounded-xl cursor-pointer ${
+              showSearch ? "bg-violet-500/10 text-violet-500" : "hover:bg-white/5"
+            }`}
+            title="Matndan qidirish"
+          >
+            <Search className="w-5 h-5" />
+          </button>
         </div>
-      </header>
+      </div>
+    </header>
+
+      {/* Search Input overlay bar */}
+      <AnimatePresence>
+        {showSearch && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            className={`px-6 py-3 border-b flex items-center gap-3 z-10 transition-colors duration-300 ${
+              theme === "light" 
+                ? "bg-white border-black/5 text-[#09090b]" 
+                : theme === "sepia" 
+                ? "bg-[#fcf6e8] border-[#433422]/10 text-[#433422]" 
+                : "bg-[#09090c] border-white/5 text-[#f4f4f5]"
+            }`}
+          >
+            <Search className="w-4 h-4 text-zinc-500" />
+            <input
+              type="text"
+              placeholder="Matndan kalit so'zni qidiring..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="flex-1 bg-transparent text-sm border-none focus:outline-none placeholder-zinc-500 font-sans"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="p-1 rounded-full hover:bg-black/5 text-zinc-400 cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Progress Bar indicator */}
       <div className="h-[3px] w-full bg-white/5 z-20">
@@ -534,12 +675,17 @@ export default function ReaderPage({ params }: PageProps) {
             </div>
 
             {/* Reading Content */}
-            <article
+            <motion.article
               ref={articleRef}
+              key={currentChapterIdx}
+              initial={{ rotateY: 10, opacity: 0, transformOrigin: "left center" }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              exit={{ rotateY: -10, opacity: 0 }}
+              transition={{ duration: 0.45, ease: "easeOut" }}
               className={`leading-relaxed ${fontClass} max-w-none`}
               style={{
                 fontSize: `${fontSize}px`,
-                lineHeight: "1.8",
+                lineHeight: lineHeight === "loose" ? "2.1" : lineHeight === "relaxed" ? "1.8" : "1.5",
                 letterSpacing: "-0.011em"
               }}
             >
@@ -551,12 +697,19 @@ export default function ReaderPage({ params }: PageProps) {
                   ? "text-zinc-800" 
                   : theme === "sepia" 
                   ? "text-[#433422]" 
-                  : "text-zinc-300";
+                  : "text-zinc-350";
                   
+                const alignClass = 
+                  alignment === "justify" 
+                    ? "text-justify" 
+                    : alignment === "center" 
+                    ? "text-center" 
+                    : "text-left";
+
                 return (
                   <p
                     key={pIdx}
-                    className={`mb-6 text-justify sm:text-left leading-relaxed ${paragraphColorClass} ${
+                    className={`mb-6 leading-relaxed ${alignClass} ${paragraphColorClass} ${
                       isFirst
                         ? "first-letter:text-5xl first-letter:font-bold first-letter:font-serif first-letter:mr-3 first-letter:float-left first-letter:text-[var(--primary)] first-letter:leading-none"
                         : ""
@@ -566,7 +719,7 @@ export default function ReaderPage({ params }: PageProps) {
                   </p>
                 );
               })}
-            </article>
+            </motion.article>
 
             {/* Chapter Navigation footer inside reader */}
             <div className="flex items-center justify-between border-t border-zinc-500/10 mt-16 pt-8">
@@ -712,6 +865,104 @@ export default function ReaderPage({ params }: PageProps) {
                       </button>
                     </div>
                   </div>
+
+                  {/* Line Height Adjuster */}
+                  <div>
+                    <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Qator oralig'i</h4>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { id: "normal", name: "Normal" },
+                        { id: "relaxed", name: "O'rtacha" },
+                        { id: "loose", name: "Keng" }
+                      ].map((lh) => (
+                        <button
+                          key={lh.id}
+                          onClick={() => setLineHeight(lh.id as any)}
+                          className={`p-2 rounded-xl border text-xs font-semibold cursor-pointer text-center transition-all ${
+                            lineHeight === lh.id
+                              ? "bg-violet-600/10 border-violet-500 text-white"
+                              : "bg-white/5 border-transparent text-zinc-450 hover:text-white"
+                          }`}
+                        >
+                          {lh.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Text Alignment Adjuster */}
+                  <div>
+                    <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Tekislash</h4>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[
+                        { id: "left", name: "Chap" },
+                        { id: "justify", name: "Yoyiq" },
+                        { id: "center", name: "Markaz" }
+                      ].map((align) => (
+                        <button
+                          key={align.id}
+                          onClick={() => setAlignment(align.id as any)}
+                          className={`p-2 rounded-xl border text-xs font-semibold cursor-pointer text-center transition-all ${
+                            alignment === align.id
+                              ? "bg-violet-600/10 border-violet-500 text-white"
+                              : "bg-white/5 border-transparent text-zinc-450 hover:text-white"
+                          }`}
+                        >
+                          {align.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Brightness Adjuster */}
+                  <div>
+                    <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3 flex justify-between">
+                      <span>Ekran yorqinligi</span>
+                      <span className="text-zinc-400 font-bold">{brightness}%</span>
+                    </h4>
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="range"
+                        min="30"
+                        max="100"
+                        value={brightness}
+                        onChange={(e) => setBrightness(parseInt(e.target.value))}
+                        className="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-violet-500"
+                      />
+                    </div>
+                  </div>
+
+                  {/* TTS Control Panel */}
+                  <div>
+                    <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-3">Ovozli o'qish (TTS)</h4>
+                    <div className="flex gap-2">
+                      {!isSpeaking ? (
+                        <button
+                          onClick={startSpeaking}
+                          className="flex-1 py-2.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                        >
+                          <Play className="w-3.5 h-3.5 fill-current" />
+                          Eshitish
+                        </button>
+                      ) : (
+                        <>
+                          <button
+                            onClick={pauseSpeaking}
+                            className="flex-1 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5"
+                          >
+                            {isPausedSpeech ? <Play className="w-3.5 h-3.5 fill-current" /> : <Pause className="w-3.5 h-3.5" />}
+                            {isPausedSpeech ? "Davom" : "Pauza"}
+                          </button>
+                          <button
+                            onClick={stopSpeaking}
+                            className="px-4 py-2.5 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition-all cursor-pointer"
+                          >
+                            To'xtash
+                          </button>
+                        </>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </motion.aside>
             </>
@@ -803,6 +1054,12 @@ export default function ReaderPage({ params }: PageProps) {
             </>
           )}
         </AnimatePresence>
+
+        {/* Brightness Dimming overlay */}
+        <div
+          className="fixed inset-0 bg-black pointer-events-none z-50 transition-opacity duration-150"
+          style={{ opacity: 1 - brightness / 100 }}
+        />
       </div>
     </div>
   );
