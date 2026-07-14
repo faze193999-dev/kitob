@@ -24,6 +24,12 @@ export interface Book {
   publishedYear: number;
   gradientFrom?: string;
   gradientTo?: string;
+  premium?: boolean;
+  audiobook?: boolean;
+  audioDuration?: string;
+  editorsChoice?: boolean;
+  todaysPick?: boolean;
+  recommended?: boolean;
 }
 
 export interface Bookmark {
@@ -82,6 +88,11 @@ const INITIAL_BOOKS: Book[] = [
     publishedYear: 2026,
     featured: true,
     trending: true,
+    premium: false,
+    audiobook: false,
+    editorsChoice: true,
+    todaysPick: false,
+    recommended: true,
     chapters: [
       {
         id: 1,
@@ -119,6 +130,12 @@ When we program quantum computers, we utilize gates that perform rotations on th
     publishedYear: 2025,
     featured: true,
     trending: false,
+    premium: false,
+    audiobook: true,
+    audioDuration: "15 daqiqa",
+    editorsChoice: false,
+    todaysPick: true,
+    recommended: true,
     chapters: [
       {
         id: 1,
@@ -158,6 +175,11 @@ True rest is active, not passive. Scrolling social media is not rest; it is cogn
     publishedYear: 2025,
     featured: false,
     trending: true,
+    premium: true,
+    audiobook: false,
+    editorsChoice: false,
+    todaysPick: false,
+    recommended: true,
     chapters: [
       {
         id: 1,
@@ -190,6 +212,12 @@ When you scale, communication overhead grows quadratically. If you have 4 people
     publishedYear: 2026,
     featured: false,
     trending: true,
+    premium: true,
+    audiobook: true,
+    audioDuration: "25 daqiqa",
+    editorsChoice: true,
+    todaysPick: false,
+    recommended: false,
     chapters: [
       {
         id: 1,
@@ -222,6 +250,11 @@ He realized the universe wasn't expanding; it was rendering. We were characters 
     publishedYear: 2024,
     featured: false,
     trending: false,
+    premium: false,
+    audiobook: false,
+    editorsChoice: false,
+    todaysPick: false,
+    recommended: false,
     chapters: [
       {
         id: 1,
@@ -254,6 +287,12 @@ The question of what constitutes an 'observer' remains one of the greatest philo
     publishedYear: 1925,
     featured: false,
     trending: false,
+    premium: false,
+    audiobook: true,
+    audioDuration: "35 daqiqa",
+    editorsChoice: false,
+    todaysPick: false,
+    recommended: true,
     chapters: [
       {
         id: 1,
@@ -542,5 +581,72 @@ export const BookVerseDB = {
       categoryData,
       monthlyRevenue
     };
+  },
+
+  getQuotes() {
+    return [
+      {
+        id: 1,
+        text: "Kitob – aql chirog'i, qalb quyoshi. U insonni ma'naviy yuksaklikka chorlaydi.",
+        author: "Xalq maqoli"
+      },
+      {
+        id: 2,
+        text: "Yaxshi kitob – insonning eng sodiq do'stidir. U har qanday og'ir damda yo'l ko'rsatadi.",
+        author: "Alisher Navoiy"
+      },
+      {
+        id: 3,
+        text: "Mutolaa – aql uchun badantarbiya kabi zarurdir. Miya faolligini saqlashning eng yaxshi usuli.",
+        author: "Jozef Addison"
+      },
+      {
+        id: 4,
+        text: "Kitobsiz uy – derazasiz va eshiksiz, nur kirmaydigan qorong'u xonaga o'xshaydi.",
+        author: "Tsitseron"
+      },
+      {
+        id: 5,
+        text: "Ko'p o'qigan inson ko'p yashaydi, chunki u o'z hayotidan tashqari o'tgan ajdodlar hayotini ham yashab o'tadi.",
+        author: "Donishmandlar o'giti"
+      }
+    ];
+  },
+
+  getCollections() {
+    return [
+      {
+        id: "curated-tech",
+        title: "Dasturlash va IT olami",
+        description: "Texnologiya va dasturiy ta'minot arxitekturasiga oid eng sara kitoblar to'plami.",
+        category: "Texnologiya",
+        icon: "Cpu",
+        gradient: "from-blue-600/10 to-indigo-600/10 hover:border-indigo-500/20"
+      },
+      {
+        id: "curated-biz",
+        title: "Biznes & Startaplar sirlari",
+        description: "Kompaniyalarni rivojlantirish va tadbirkorlikka oid mukammal qo'llanmalar.",
+        category: "Biznes",
+        icon: "Briefcase",
+        gradient: "from-orange-600/10 to-red-600/10 hover:border-red-500/20"
+      },
+      {
+        id: "curated-self",
+        title: "Shaxsiy o'sish va Rivojlanish",
+        description: "Diqqatni jamlash, vaqtni boshqarish va ruhiy barkamollik manbalari.",
+        category: "Shaxsiy rivojlanish",
+        icon: "Zap",
+        gradient: "from-amber-600/10 to-yellow-600/10 hover:border-yellow-500/20"
+      },
+      {
+        id: "curated-classics",
+        title: "Klassik Badiiy Adabiyotlar",
+        description: "Insoniyat tafakkurini boyitgan o'lmas badiiy asarlar va sarguzashtlar.",
+        category: "Badiiy adabiyot",
+        icon: "BookOpen",
+        gradient: "from-emerald-600/10 to-teal-600/10 hover:border-teal-500/20"
+      }
+    ];
   }
 };

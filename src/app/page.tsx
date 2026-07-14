@@ -10,6 +10,15 @@ import { Categories } from "@/components/Categories";
 import { Authors } from "@/components/Authors";
 import { StatsCounter } from "@/components/StatsCounter";
 import { Testimonials } from "@/components/Testimonials";
+
+// New components
+import { ContinueReading } from "@/components/ContinueReading";
+import { ReadingChallenge } from "@/components/ReadingChallenge";
+import { QuotesOfTheDay } from "@/components/QuotesOfTheDay";
+import { Collections } from "@/components/Collections";
+import { EditorialGrid } from "@/components/EditorialGrid";
+import { TodaysPicks } from "@/components/TodaysPicks";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, ArrowUp } from "lucide-react";
 import Link from "next/link";
@@ -34,11 +43,21 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  // Filter book lists for the various homepage sections
+  const recommendedBooks = books.filter((b) => b.recommended);
+  const newReleases = books.filter((b) => b.publishedYear >= 2025);
+  const mostPopular = [...books].sort((a, b) => b.views - a.views);
+  const editorsChoice = books.filter((b) => b.editorsChoice);
+  const freeBooks = books.filter((b) => !b.premium);
+  const premiumBooks = books.filter((b) => b.premium);
+  const audioBooks = books.filter((b) => b.audiobook);
+
   return (
     <div className="min-h-screen bg-transparent relative">
       {/* Ambient backgrounds */}
-      <div className="absolute top-[30%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-orange-200/15 blur-[150px] pointer-events-none" />
-      <div className="absolute top-[60%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-violet-200/10 blur-[150px] pointer-events-none" />
+      <div className="absolute top-[15%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-orange-200/10 blur-[150px] pointer-events-none" />
+      <div className="absolute top-[40%] right-[-10%] w-[50vw] h-[50vw] rounded-full bg-violet-200/10 blur-[150px] pointer-events-none" />
+      <div className="absolute top-[70%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-orange-200/5 blur-[150px] pointer-events-none" />
 
       {/* Navigation */}
       <Navbar onSearchClick={() => document.getElementById("search-section")?.scrollIntoView({ behavior: "smooth" })} />
@@ -49,7 +68,7 @@ export default function Home() {
       {/* Main Content Containers */}
       <main className="relative z-10">
         
-        {/* Search Bar Section */}
+        {/* AI-Powered Search Bar Section */}
         <section id="search-section" className="py-12 max-w-7xl mx-auto px-6 scroll-mt-24">
           <div className="glass-panel p-8 sm:p-12 rounded-[32px] text-center border border-black/5 relative overflow-hidden">
             {/* Ambient inner glow */}
@@ -71,13 +90,79 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Trending Slider */}
+        {/* 1. Continue Reading (Mutolaani davom ettirish) */}
+        <ContinueReading />
+
+        {/* 2. Reading Challenge (Mutolaa chorlovi) */}
+        <ReadingChallenge />
+
+        {/* 3. Today's Picks (Kun tanlovlari) */}
+        <TodaysPicks books={books} />
+
+        {/* 4. Trending (Trenddagilar) */}
         <TrendingCarousel books={books} />
 
-        {/* Genres & Library Selector */}
-        <Categories books={books} />
+        {/* 5. Recommended for You (Siz uchun tavsiyalar) */}
+        <EditorialGrid
+          title="Siz uchun tavsiyalar"
+          description="Mutolaa tarixingiz va qiziqishlaringiz asosida tanlangan asarlar"
+          books={recommendedBooks}
+        />
 
-        {/* Stats Counter */}
+        {/* 6. Collections (Maxsus to'plamlar) */}
+        <Collections />
+
+        {/* 7. Categories & Genres (Katalog) */}
+        <div id="categories-section" className="scroll-mt-24">
+          <Categories books={books} />
+        </div>
+
+        {/* 8. Editor's Choice (Muharrir tanlovi) */}
+        <EditorialGrid
+          title="Muharrir tanlovi"
+          description="BookVerse muharrirlari tomonidan tavsiya etilgan eng sara asarlar"
+          books={editorsChoice}
+        />
+
+        {/* 9. New Releases (Yangi nashrlar) */}
+        <EditorialGrid
+          title="Yangi nashrlar"
+          description="Kutubxonamizga yaqin orada qo'shilgan so'nggi adabiyotlar"
+          books={newReleases}
+        />
+
+        {/* 10. Most Popular (Eng ommabop) */}
+        <EditorialGrid
+          title="Eng ommabop"
+          description="Kitobxonlar tomonidan eng ko'p o'qilgan va sevib mutolaa qilinayotgan kitoblar"
+          books={mostPopular}
+        />
+
+        {/* 11. Audiobooks (Audio kitoblar) */}
+        <EditorialGrid
+          title="Audio kitoblar"
+          description="Tinglash orqali kitob olamiga sayohat qilish uchun maxsus formatlar"
+          books={audioBooks}
+        />
+
+        {/* 12. Free Books (Bepul kitoblar) */}
+        <EditorialGrid
+          title="Bepul kitoblar"
+          description="Mutlaqo to'lovsiz va a'zoliksiz mutolaa qilish mumkin bo'lgan asarlar"
+          books={freeBooks}
+        />
+
+        {/* 13. Premium Books (Premium kitoblar) */}
+        <EditorialGrid
+          title="Premium kitoblar"
+          description="Eksklyuziv a'zolikka ega kitobxonlar uchun maxsus asarlar to'plami"
+          books={premiumBooks}
+        />
+
+        {/* 14. Quotes of the Day (Kun iqtiboslari) */}
+        <QuotesOfTheDay />
+
+        {/* Platform telemetry */}
         <StatsCounter />
 
         {/* Featured Thinkers */}
@@ -103,7 +188,7 @@ export default function Home() {
           <div>
             <h4 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-4">Platforma</h4>
             <div className="flex flex-col gap-2.5 text-sm text-zinc-500 font-medium">
-              <a href="#discover" className="hover:text-zinc-800 transition-colors duration-200">Kutubxona katalogi</a>
+              <a href="#categories-section" className="hover:text-zinc-800 transition-colors duration-200">Kutubxona katalogi</a>
               <Link href="/dashboard" className="hover:text-zinc-800 transition-colors duration-200">Boshqaruv paneli</Link>
               <Link href="/auth" className="hover:text-zinc-800 transition-colors duration-200">Tizimga kirish</Link>
             </div>
