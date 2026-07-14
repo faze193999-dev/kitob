@@ -80,7 +80,7 @@ export const HeroSection: React.FC = () => {
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
             >
               <Link
-                href="/reader/odyssey-of-code"
+                href="/book/odyssey-of-code"
                 className="px-8 py-4 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold text-sm tracking-wide shadow-xl shadow-violet-500/10 hover:shadow-violet-500/15 transition-all duration-300 flex items-center gap-2"
               >
                 <BookOpen className="w-4 h-4" />

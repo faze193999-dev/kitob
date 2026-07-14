@@ -129,10 +129,10 @@ export const Categories: React.FC<CategoriesProps> = ({ books }) => {
                 <div className="mt-5 pt-4 border-t border-black/5 flex items-center justify-between">
                   <span className="text-xs text-zinc-500">{book.readTime} o'qish</span>
                   <Link
-                    href={`/reader/${book.id}`}
+                    href={`/book/${book.id}`}
                     className="px-4 py-2 rounded-xl bg-black/5 border border-black/5 text-zinc-700 group-hover:bg-violet-600 group-hover:text-white group-hover:border-violet-600 transition-all duration-300"
                   >
-                    Kitobni o'qish
+                    Batafsil
                   </Link>
                 </div>
               </motion.div>

@@ -32,6 +32,16 @@ export interface Book {
   recommended?: boolean;
 }
 
+export interface Review {
+  id: string;
+  userId: string;
+  username: string;
+  bookId: string;
+  rating: number;
+  text: string;
+  createdAt: string;
+}
+
 export interface Bookmark {
   id: string;
   userId: string;
@@ -648,5 +658,80 @@ export const BookVerseDB = {
         gradient: "from-emerald-600/10 to-teal-600/10 hover:border-teal-500/20"
       }
     ];
+  },
+
+  getReviews(bookId: string): Review[] {
+    const allReviews = getStorageItem<Review[]>("bv_reviews", INITIAL_REVIEWS);
+    return allReviews.filter((r) => r.bookId === bookId);
+  },
+
+  addReview(review: Omit<Review, "id" | "createdAt">): Review {
+    const allReviews = getStorageItem<Review[]>("bv_reviews", INITIAL_REVIEWS);
+    const newReview: Review = {
+      ...review,
+      id: Math.random().toString(36).substr(2, 9),
+      createdAt: new Date().toISOString()
+    };
+    allReviews.push(newReview);
+    setStorageItem("bv_reviews", allReviews);
+
+    // Update book rating
+    const book = this.getBookById(review.bookId);
+    if (book) {
+      const bookReviews = allReviews.filter((r) => r.bookId === review.bookId);
+      const avgRating = bookReviews.reduce((sum, r) => sum + r.rating, 0) / bookReviews.length;
+      book.rating = parseFloat(avgRating.toFixed(1));
+      this.updateBook(book);
+    }
+
+    return newReview;
+  },
+
+  getFavorites(userId: string): string[] {
+    return getStorageItem<string[]>(`bv_favorites_${userId}`, []);
+  },
+
+  toggleFavorite(userId: string, bookId: string): boolean {
+    const favs = this.getFavorites(userId);
+    const idx = favs.indexOf(bookId);
+    let added = false;
+    if (idx !== -1) {
+      favs.splice(idx, 1);
+    } else {
+      favs.push(bookId);
+      added = true;
+    }
+    setStorageItem(`bv_favorites_${userId}`, favs);
+    return added;
   }
 };
+
+const INITIAL_REVIEWS: Review[] = [
+  {
+    id: "rev-1",
+    userId: "bv-user-2",
+    username: "Dorian Gray",
+    bookId: "odyssey-of-code",
+    rating: 5,
+    text: "Texnologiya va kod yozish haqidagi ajoyib falsafiy asar! Dasturchilar uchun o'qish shart bo'lgan kitob.",
+    createdAt: "2026-06-15T12:00:00Z"
+  },
+  {
+    id: "rev-2",
+    userId: "bv-user-3",
+    username: "Elena Rostova",
+    bookId: "mind-and-flow",
+    rating: 4.8,
+    text: "E'tiborimizni qanday boshqarish va unumdorlikni oshirish haqida juda foydali maslahatlar yozilgan. Har bir bobida chuqur ma'no bor.",
+    createdAt: "2026-06-20T10:30:00Z"
+  },
+  {
+    id: "rev-3",
+    userId: "bv-user-1",
+    username: "Aria Sterling",
+    bookId: "great-gatsby",
+    rating: 5,
+    text: "Fitzjeraldning o'lmas klassik asari. Har safar o'qiganimda yangicha hislar uyg'otadi. Kitob dizayni ham ajoyib moslangan.",
+    createdAt: "2026-07-01T08:15:00Z"
+  }
+];

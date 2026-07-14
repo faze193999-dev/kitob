@@ -44,7 +44,7 @@ export const SearchBar: React.FC = () => {
   const handleSelectBook = (id: string) => {
     setIsOpen(false);
     setQuery("");
-    router.push(`/reader/${id}`);
+    router.push(`/book/${id}`);
   };
 
   return (

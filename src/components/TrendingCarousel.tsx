@@ -67,7 +67,7 @@ export const TrendingCarousel: React.FC<TrendingCarouselProps> = ({ books }) => 
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: idx * 0.1, ease: "easeOut" }}
             >
-              <Link href={`/reader/${book.id}`} className="block group">
+              <Link href={`/book/${book.id}`} className="block group">
                 <div className="relative glass-card rounded-3xl p-4 flex flex-col h-full cursor-pointer overflow-hidden border border-black/5">
                   {/* Glowing hover card effect */}
                   <div className="absolute inset-0 bg-gradient-to-tr from-violet-600/0 to-violet-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

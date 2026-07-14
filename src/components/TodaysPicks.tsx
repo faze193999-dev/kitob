@@ -83,11 +83,11 @@ export const TodaysPicks: React.FC<TodaysPicksProps> = ({ books }) => {
 
           <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4">
             <Link
-              href={`/reader/${todaysPickBook.id}`}
+              href={`/book/${todaysPickBook.id}`}
               className="px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-semibold flex items-center gap-2 shadow-lg shadow-violet-600/10 transition-all cursor-pointer"
             >
               <BookOpen className="w-4 h-4" />
-              Mutolaani boshlash
+              Batafsil ko'rish
             </Link>
           </div>
         </div>
