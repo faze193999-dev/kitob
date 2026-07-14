@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
-import { BookOpen, Search, User, LogOut, Menu, X, LayoutDashboard, Sliders, Bell } from "lucide-react";
+import { BookOpen, Search, User, LogOut, Menu, X, LayoutDashboard, Sliders, Bell, Globe } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface NavbarProps {
@@ -17,6 +17,32 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+
+  // i18n Multi-lingual & Notification states
+  const [lang, setLang] = useState("UZ");
+  const [showLangDropdown, setShowLangDropdown] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedLang = localStorage.getItem("bv_lang");
+      if (savedLang) setLang(savedLang);
+    }
+  }, []);
+
+  const changeLanguage = (newLang: string) => {
+    setLang(newLang);
+    localStorage.setItem("bv_lang", newLang);
+    window.location.reload();
+  };
+
+  const translations: Record<string, Record<string, string>> = {
+    UZ: { kashf: "Kashf etish", kutubxona: "Mening kutubxonam", admin: "Boshqaruv paneli", kirish: "Kirish", chiqish: "Chiqish", sozlalar: "Mutolaa sozlamalari", qidirish: "Kitoblarni qidirish" },
+    EN: { kashf: "Discover", kutubxona: "My Library", admin: "Admin Panel", kirish: "Login", chiqish: "Logout", sozlalar: "Reader Preferences", qidirish: "Search books" },
+    RU: { kashf: "Обзор", kutubxona: "Моя библиотека", admin: "Панель управления", kirish: "Войти", chiqish: "Выйти", sozlalar: "Настройки чтения", qidirish: "Поиск книг" }
+  };
+
+  const t = translations[lang] || translations["UZ"];
 
   // Monitor scroll depth
   useEffect(() => {
@@ -32,9 +58,8 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
   }, []);
 
   const navLinks = [
-    { name: "Kashf etish", href: "/" },
-    { name: "Mening kutubxonam", href: "/dashboard" },
-    { name: "Boshqaruv paneli", href: "/dashboard" }
+    { name: t.kashf, href: "/" },
+    { name: t.kutubxona, href: "/dashboard" }
   ];
 
   const toggleTheme = () => {
@@ -117,11 +142,92 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
             <button
               onClick={toggleTheme}
               className="p-2.5 rounded-xl bg-black/5 border border-transparent text-zinc-500 hover:text-zinc-950 hover:bg-black/8 transition-all duration-300 cursor-pointer text-xs font-semibold"
-              title="Mutolaa sozlamalari"
+              title={t.sozlalar}
             >
               <Sliders className="w-4 h-4" />
             </button>
           )}
+
+          {/* Notifications Bell */}
+          {user && (
+            <div className="relative">
+              <button
+                onClick={() => setShowNotifications(!showNotifications)}
+                className={`p-2.5 rounded-xl border border-transparent transition-all duration-300 cursor-pointer ${
+                  showNotifications ? "bg-violet-600/10 text-violet-650" : "bg-black/5 text-zinc-500 hover:text-zinc-950 hover:bg-black/8"
+                }`}
+                title="Bildirishnomalar"
+              >
+                <Bell className="w-4 h-4" />
+              </button>
+              
+              <AnimatePresence>
+                {showNotifications && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setShowNotifications(false)} />
+                    <motion.div
+                      className="absolute right-0 mt-2 w-72 rounded-2xl glass-panel p-3.5 z-50 text-left space-y-3"
+                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                    >
+                      <h4 className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider border-b border-black/5 pb-2">Bildirishnomalar</h4>
+                      <div className="space-y-2.5 max-h-56 overflow-y-auto">
+                        <div className="text-xs p-2 rounded-xl bg-violet-600/5 border border-violet-500/5">
+                          <p className="font-bold text-zinc-800">AI Tavsiya</p>
+                          <p className="text-zinc-500 mt-0.5 font-sans leading-normal">Kayfiyatingizga mos yangi kitoblar tahlil qilindi!</p>
+                        </div>
+                        <div className="text-xs p-2 rounded-xl bg-black/3">
+                          <p className="font-bold text-zinc-800">Maqsad bajarildi</p>
+                          <p className="text-zinc-500 mt-0.5 font-sans leading-normal">Bugungi mutolaa chorlovini yakunladingiz, ajoyib!</p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
+          {/* i18n Language Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setShowLangDropdown(!showLangDropdown)}
+              className={`p-2.5 rounded-xl border border-transparent transition-all duration-300 cursor-pointer ${
+                showLangDropdown ? "bg-violet-600/10 text-violet-650" : "bg-black/5 text-zinc-500 hover:text-zinc-950 hover:bg-black/8"
+              } flex items-center gap-1 text-xs font-bold`}
+              title="Tilni o'zgartirish"
+            >
+              <Globe className="w-4 h-4" />
+              <span>{lang}</span>
+            </button>
+
+            <AnimatePresence>
+              {showLangDropdown && (
+                <>
+                  <div className="fixed inset-0 z-40" onClick={() => setShowLangDropdown(false)} />
+                  <motion.div
+                    className="absolute right-0 mt-2 w-24 rounded-xl glass-panel p-1.5 z-50 text-center"
+                    initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  >
+                    {["UZ", "EN", "RU"].map((l) => (
+                      <button
+                        key={l}
+                        onClick={() => changeLanguage(l)}
+                        className={`w-full py-1.5 rounded-lg text-xs font-bold cursor-pointer ${
+                          lang === l ? "bg-violet-600 text-white" : "hover:bg-black/5 text-zinc-600"
+                        }`}
+                      >
+                        {l === "UZ" ? "Uzbek" : l === "EN" ? "English" : "Русский"}
+                      </button>
+                    ))}
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
+          </div>
 
           {/* Admin Portal Button */}
           {user?.role === "admin" && (

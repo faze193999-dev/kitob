@@ -26,7 +26,8 @@ import {
   Sparkles,
   CheckCircle2,
   AlertCircle,
-  Crown
+  Crown,
+  Brain
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
@@ -59,6 +60,17 @@ export default function BookDetailPage({ params }: PageProps) {
   const [reviewError, setReviewError] = useState("");
   const [reviewSuccess, setReviewSuccess] = useState(false);
 
+  // Advanced AI & Author states
+  const [isFollowingAuthor, setIsFollowingAuthor] = useState(false);
+  const [detailTab, setDetailTab] = useState<"description" | "summary">("description");
+  const [summaryLoading, setSummaryLoading] = useState(false);
+  const [aiSummary, setAiSummary] = useState("");
+  const [chatMessages, setChatMessages] = useState<{ sender: "ai" | "user"; text: string }[]>([
+    { sender: "ai", text: "Assalomu alaykum! Men BookVerse AI yordamchisiman. Ushbu kitob haqida qanday savollaringiz bor? Asar g'oyasi yoki muallifi haqida so'rashingiz mumkin." }
+  ]);
+  const [chatInput, setChatInput] = useState("");
+  const [isChatTyping, setIsChatTyping] = useState(false);
+
   useEffect(() => {
     const loadedBook = BookVerseDB.getBookById(bookId);
     if (!loadedBook) {
@@ -67,6 +79,11 @@ export default function BookDetailPage({ params }: PageProps) {
     }
     setBook(loadedBook);
     setReviews(BookVerseDB.getReviews(bookId));
+
+    if (typeof window !== "undefined") {
+      const following = localStorage.getItem(`bv_following_${loadedBook.author}`);
+      setIsFollowingAuthor(following === "true");
+    }
 
     if (user) {
       const favs = BookVerseDB.getFavorites(user.id);
@@ -130,6 +147,65 @@ export default function BookDetailPage({ params }: PageProps) {
     } else {
       setShowUpgradeModal(true);
     }
+  };
+
+  const toggleFollowAuthor = () => {
+    if (!book) return;
+    const nextVal = !isFollowingAuthor;
+    setIsFollowingAuthor(nextVal);
+    localStorage.setItem(`bv_following_${book.author}`, nextVal ? "true" : "false");
+    
+    if (nextVal) {
+      confetti({ particleCount: 30, spread: 20 });
+    }
+  };
+
+  const loadAiSummary = () => {
+    if (!book) return;
+    setDetailTab("summary");
+    if (aiSummary) return; // Already loaded
+
+    setSummaryLoading(true);
+    setTimeout(() => {
+      let text = "";
+      if (book.id === "odyssey-of-code") {
+        text = "1. **Tizimli soddalik**: Dastur arxitekturasida soddalikni saqlash eng muhim omildir. Murakkab kod uzoq muddatda inqirozga olib keladi.\n2. **Kvant inqilobi**: Kelajakda kvant hisoblashlari va sun'iy intellektning simbiozi insoniyat tafakkurini butunlay o'zgartiradi.\n3. **Amaliy mahorat**: Dasturchi faqat kod yozuvchi emas, u raqamli makonda haqiqiy arxitektor va yozuvchi kabi ijod qiladi.";
+      } else if (book.id === "mind-and-flow") {
+        text = "1. **Diqqat - kapital**: Hozirgi raqamli chalg'ituvchi omillar asrida, diqqatni 20-30 daqiqa davomida bitta vazifaga yo'naltira olish eng katta muvaffaqiyat garovidir.\n2. **Oqim (Flow) holati**: Kuch sarflamasdan, maksimal darajada unumdor ishlash holatiga erishish mashqlari ko'rsatib o'tilgan.\n3. **Raqamli gigiyena**: Ijtimoiy tarmoqlar bildirishnomalarini boshqarish va miyaga dam berish algoritmlari.";
+      } else {
+        text = "1. **Konseptual tahlil**: Asar asosiy g'oyasi inson salohiyatini va jamiyat madaniyatini yuksaltirishga qaratilgan.\n2. **Falsafiy qarashlar**: Muallif kitobxon bilan muloqot tarzida eng muhim hayotiy savollarga javob beradi.\n3. **Amaliy tavsiyalar**: Kitobxonlik faoliyatini yanada samarali qilish va fikrlash doirasini kengaytirish usullari.";
+      }
+      setAiSummary(text);
+      setSummaryLoading(false);
+      confetti({ particleCount: 40, spread: 25 });
+    }, 1200);
+  };
+
+  const handleSendChatMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!chatInput.trim() || !book) return;
+
+    const userText = chatInput;
+    setChatMessages((prev) => [...prev, { sender: "user", text: userText }]);
+    setChatInput("");
+    setIsChatTyping(true);
+
+    setTimeout(() => {
+      let reply = "";
+      const lower = userText.toLowerCase();
+      if (lower.includes("g'oya") || lower.includes("mazmun") || lower.includes("konsept")) {
+        reply = `Ushbu "${book.title}" asarining asosiy g'oyasi - o'quvchida tizimli fikrlash, diqqatni jamlash va intellektual salohiyatni yuksaltirish haqida amaliy va falsafiy bilim berishdir.`;
+      } else if (lower.includes("muallif") || lower.includes("yozgan") || lower.includes("kim")) {
+        reply = `Asar muallifi ${book.author} bo'lib, u o'z sohasida ko'plab amaliy tadqiqotlar olib borgan nufuzli olim va kitobxonlar tomonidan e'tirof etilgan mutaxassisdir.`;
+      } else if (lower.includes("bob") || lower.includes("nechta")) {
+        reply = `Ushbu kitob jami ${book.chapters.length} ta bobdan iborat. Har bir bob asarning umumiy g'oyasini to'ldirishga xizmat qiladi. Siz ularni mundarija qismida ko'rishingiz mumkin.`;
+      } else {
+        reply = `Juda qiziqarli savol! "${book.title}" asarida aynan shu mavzuga alohida bob ajratilgan bo'lib, unda chuqur tahliliy fikrlar yuritiladi. Kitobni to'liq o'qib chiqishni tavsiya etaman!`;
+      }
+
+      setChatMessages((prev) => [...prev, { sender: "ai", text: reply }]);
+      setIsChatTyping(false);
+    }, 1000);
   };
 
   const handleAddReview = (e: React.FormEvent) => {
@@ -241,17 +317,13 @@ export default function BookDetailPage({ params }: PageProps) {
               </button>
 
               {book.audiobook && (
-                <button
-                  onClick={() => setIsPlayingAudio(!isPlayingAudio)}
-                  className={`w-full py-4 rounded-2xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                    isPlayingAudio
-                      ? "bg-indigo-600 text-white shadow-xl shadow-indigo-600/10"
-                      : "bg-indigo-50 hover:bg-indigo-100 text-indigo-700"
-                  }`}
+                <Link
+                  href={`/audiobook/${book.id}`}
+                  className="w-full py-4 rounded-2xl font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-center"
                 >
                   <Headphones className="w-4.5 h-4.5" />
-                  {isPlayingAudio ? "Audioni to'xtatish" : "Audiokitobni tinglash"}
-                </button>
+                  Audiokitobni tinglash
+                </Link>
               )}
 
               <button
@@ -306,14 +378,59 @@ export default function BookDetailPage({ params }: PageProps) {
                 <h1 className="text-3xl sm:text-4xl font-bold font-sans text-zinc-800 tracking-tight leading-tight">
                   {book.title}
                 </h1>
-                <p className="text-base text-zinc-500 font-medium">Muallif: <span className="text-zinc-700 font-bold">{book.author}</span></p>
+                <div className="flex items-center gap-3">
+                  <p className="text-base text-zinc-500 font-medium">Muallif: <span className="text-zinc-700 font-bold">{book.author}</span></p>
+                  <button
+                    type="button"
+                    onClick={toggleFollowAuthor}
+                    className={`px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                      isFollowingAuthor
+                        ? "bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 font-extrabold"
+                        : "bg-black/5 hover:bg-black/8 text-zinc-600"
+                    }`}
+                  >
+                    {isFollowingAuthor ? "Kuzatilmoqda ✓" : "Kuzatish +"}
+                  </button>
+                </div>
               </div>
             </div>
 
-            {/* Description (Tavsif) */}
-            <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-black/5 space-y-4">
-              <h3 className="text-sm font-bold text-zinc-800 uppercase tracking-widest">Qisqacha tavsif</h3>
-              <p className="text-zinc-600 text-sm leading-relaxed font-sans">{book.description}</p>
+            {/* Description & AI Summary Tabs */}
+            <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-black/5 space-y-6">
+              <div className="flex items-center gap-4 border-b border-black/5 pb-2">
+                <button
+                  type="button"
+                  onClick={() => setDetailTab("description")}
+                  className={`text-xs font-bold uppercase tracking-widest cursor-pointer pb-1 transition-all border-b-2 ${
+                    detailTab === "description" ? "border-violet-500 text-zinc-800" : "border-transparent text-zinc-400"
+                  }`}
+                >
+                  Qisqacha tavsif
+                </button>
+                <button
+                  type="button"
+                  onClick={loadAiSummary}
+                  className={`text-xs font-bold uppercase tracking-widest cursor-pointer pb-1 transition-all border-b-2 flex items-center gap-1.5 ${
+                    detailTab === "summary" ? "border-violet-500 text-zinc-800" : "border-transparent text-zinc-400"
+                  }`}
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-violet-500" />
+                  AI Xulosa
+                </button>
+              </div>
+
+              {detailTab === "description" ? (
+                <p className="text-zinc-600 text-sm leading-relaxed font-sans">{book.description}</p>
+              ) : summaryLoading ? (
+                <div className="py-4 flex items-center justify-center gap-2 text-xs text-zinc-450">
+                  <div className="w-4 h-4 rounded-full border-2 border-violet-300 border-t-violet-600 animate-spin" />
+                  <span>AI kitob xulosasini tayyorlamoqda...</span>
+                </div>
+              ) : (
+                <div className="space-y-3 whitespace-pre-line text-zinc-650 text-sm leading-relaxed font-sans">
+                  {aiSummary}
+                </div>
+              )}
             </div>
 
             {/* Table of Contents (Mundarija) */}
@@ -338,6 +455,66 @@ export default function BookDetailPage({ params }: PageProps) {
                   </Link>
                 ))}
               </div>
+            </div>
+
+            {/* AI Q&A Chatbot Section */}
+            <div className="glass-panel p-6 sm:p-8 rounded-[32px] border border-black/5 space-y-5">
+              <div className="flex items-center justify-between border-b border-black/5 pb-3">
+                <div className="flex items-center gap-2">
+                  <Brain className="w-5 h-5 text-violet-650" />
+                  <h3 className="text-sm font-bold text-zinc-850 uppercase tracking-widest">AI bilan asar haqida suhbat</h3>
+                </div>
+                <span className="text-[10px] text-zinc-400 font-bold uppercase tracking-wider bg-violet-600/5 px-2.5 py-1 rounded-full">
+                  BookVerse AI v2.0
+                </span>
+              </div>
+
+              {/* Chat bubbles container */}
+              <div className="h-64 overflow-y-auto space-y-3 pr-2">
+                {chatMessages.map((msg, idx) => (
+                  <div
+                    key={idx}
+                    className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"}`}
+                  >
+                    <div
+                      className={`max-w-[80%] p-3.5 rounded-2xl text-xs leading-relaxed font-sans ${
+                        msg.sender === "user"
+                          ? "bg-violet-600 text-white rounded-tr-none shadow"
+                          : "bg-black/5 text-zinc-700 rounded-tl-none border border-black/5"
+                      }`}
+                    >
+                      {msg.text}
+                    </div>
+                  </div>
+                ))}
+
+                {isChatTyping && (
+                  <div className="flex justify-start">
+                    <div className="bg-black/5 text-zinc-500 border border-black/5 px-4 py-3 rounded-2xl rounded-tl-none text-xs flex items-center gap-1.5 font-sans">
+                      <div className="w-1.5 h-1.5 bg-zinc-550 rounded-full animate-bounce" />
+                      <div className="w-1.5 h-1.5 bg-zinc-550 rounded-full animate-bounce [animation-delay:0.2s]" />
+                      <div className="w-1.5 h-1.5 bg-zinc-550 rounded-full animate-bounce [animation-delay:0.4s]" />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Chat input box */}
+              <form onSubmit={handleSendChatMessage} className="flex gap-2 border-t border-black/5 pt-3">
+                <input
+                  type="text"
+                  placeholder="Asar haqida savol so'rang (masalan: Asar g'oyasi nima?)..."
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
+                  className="flex-1 bg-black/5 border border-black/5 rounded-xl px-4 py-3 text-xs text-zinc-800 placeholder-zinc-400 focus:outline-none focus:border-violet-500 focus:bg-white transition-all font-sans"
+                />
+                <button
+                  type="submit"
+                  className="px-5 py-3 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
+                >
+                  Yuborish
+                </button>
+              </form>
             </div>
 
             {/* Reviews (Sharhlar) */}
